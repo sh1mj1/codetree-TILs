@@ -19,10 +19,11 @@ val visited = Array(N) {
     BooleanArray(N) { false }
 }
 
-val ansList = IntArray(MAX_NUM + 1) { 0 }
-
 val dr = intArrayOf(1, 0, -1, 0)
 val dc = intArrayOf(0, 1, 0, -1)
+
+var boomBlockCount = 0
+var maxAdjBlockSize = 1
 
 fun canGo(r: Int, c: Int): Boolean {
     if(r < 0 || r >= N || c < 0 || c >= N) {
@@ -31,22 +32,28 @@ fun canGo(r: Int, c: Int): Boolean {
     if(visited[r][c]){
         return false
     }
+
     return true
 }
 
-fun dfs(r: Int, c: Int) {
-    if(!canGo(r, c)) {
-        return
-    }
+var adjCount = 0
 
+fun dfs(r: Int, c: Int) {
+    adjCount++
     visited[r][c] = true
-    val now = arr[r][c]
-    ansList[now] += 1
+    
 
     for(dir in 0 .. 3) {
-        val nextR = r + dr[r]
-        val nextC = c + dc[c]
-        dfs(nextR, nextC)
+        val nextR = r + dr[dir]
+        val nextC = c + dc[dir]
+
+        if(!canGo(nextR, nextC)) {
+            continue
+        }
+
+        if(arr[r][c] == arr[nextR][nextC]){
+            dfs(nextR, nextC)
+        }
     }
 
 }
@@ -55,23 +62,20 @@ fun dfs(r: Int, c: Int) {
 fun main() {
     for(r in 0 until N) {
         for (c in 0 until N){
-            dfs(r, c)
-        }
-    }
-    
-    var max = 0
-    var count = 0
+            if(canGo(r,c)) {
+                dfs(r, c)
+            }
+            
+            if(adjCount >= 4) {
+                boomBlockCount++
+            }
+            maxAdjBlockSize = max(maxAdjBlockSize, adjCount)
 
-    for(i in 1 .. 100) {
-        if(ansList[i] >= 4) {
-            count++
-        }
-
-        if(max < ansList[i]) {
-            max = ansList[i]
+            adjCount = 0
         }
     }
 
-    println("${count} ${max}")
+
+    println("${boomBlockCount} ${maxAdjBlockSize}")
 
 }
