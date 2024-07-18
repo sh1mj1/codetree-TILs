@@ -31,9 +31,9 @@ fun canGo(r: Int, c: Int): Boolean {
 
     if(r >= rowCount || c >= colCount) return false
 
-    if(visited[r][c]) return false
+    if(visited[c][r]) return false
 
-    if(arr[r][c] == 0) return false
+    if(arr[c][r] == 0) return false
 
     return true
 }
@@ -51,12 +51,12 @@ fun bfs(){
         }
 
         for(dir in 0 .. 3) {
-            val nextR = nowR + dr[dir]
             val nextC = nowC + dc[dir]
+            val nextR = nowR + dr[dir]
 
             if(canGo(nextR, nextC)) {
                 qu.add(Pos(nextR, nextC))
-                visited[nextR][nextC] = true
+                visited[nextC][nextR] = true
             }
         }
     }
