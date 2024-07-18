@@ -27,7 +27,9 @@ val dr = intArrayOf(1, 0, -1, 0)
 val dc = intArrayOf(0, 1, 0, -1)
 
 fun canGo(r: Int, c: Int): Boolean {
-    if(r < 0 || r >= colCount || c < 0 || c >= rowCount) return false
+    if(r < 0 || c < 0) return false
+
+    if(r >= rowCount || c >= colCount) return false
 
     if(visited[r][c]) return false
 
