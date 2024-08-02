@@ -1,82 +1,114 @@
-import java.util.Scanner
+/*
+1 sec
+80MB
+*/
 
-data class Pair(val x: Int, val y: Int)
+import java.util.*
+import kotlin.math.*
 
-const val BOMB_TYPE_NUM = 3
-const val MAX_N = 20
+val sc = Scanner(System.`in`)
+var bombCount = 0
 
-var n = 0
-val bombType = Array(MAX_N) { IntArray(MAX_N) }
-val bombed = Array(MAX_N) { BooleanArray(MAX_N) }
+val n = sc.nextInt()
 
-var ans = 0
-val bombPos = mutableListOf<Pair>()
+data class Pos(
+    val x: Int,
+    val y: Int
+)
 
-fun inRange(x: Int, y: Int) = x in 0 until n && y in 0 until n
+val positions = mutableListOf<Pos>()
 
-fun bomb(x: Int, y: Int, bType: Int) {
-    val bombShapes = arrayOf(
-        emptyArray(),
-        arrayOf(Pair(-2, 0), Pair(-1, 0), Pair(0, 0), Pair(1, 0), Pair(2, 0)),
-        arrayOf(Pair(-1, 0), Pair(1, 0), Pair(0, 0), Pair(0, -1), Pair(0, 1)),
-        arrayOf(Pair(-1, -1), Pair(-1, 1), Pair(0, 0), Pair(1, -1), Pair(1, 1))
-    )
-
-    bombShapes[bType].forEach { (dx, dy) ->
-        val nx = x + dx
-        val ny = y + dy
-        if (inRange(nx, ny)) {
-            bombed[nx][ny] = true
-        }
+val initialGraph = Array(n) { x -> 
+    IntArray(n) { y ->
+         val now = sc.nextInt()
+         if(now == 1) {
+            positions.add(Pos(x, y))
+            bombCount++
+         }
+         now
     }
 }
 
-fun calc(): Int {
-    bombed.forEach { row -> row.fill(false) }
+var graph = initialGraph.clone()
+val maxPossibleExplosionCount = bombCount * 5
 
-    bombPos.forEach { (x, y) ->
-        if (bombType[x][y] > 0) {
-            bomb(x, y, bombType[x][y])
-        }
-    }
+var ans = bombCount
 
-    return bombed.sumOf { row -> row.count { it } }
-}
+data class DxDy(
+    val dx: IntArray,
+    val dy: IntArray
+)
 
-fun findMaxArea(cnt: Int) {
-    if (cnt == bombPos.size) {
-        ans = maxOf(ans, calc())
-        return
-    }
-    val (x, y) = bombPos[cnt]
-    (1..3).forEach { i ->
-        bombType[x][y] = i
-        findMaxArea(cnt + 1)
-        bombType[x][y] = 0
-    }
-}
+val dx1 = intArrayOf(1, 2, -1, -2)
+val dy1 = intArrayOf(0, 0, 0, 0)
 
-fun <T> Array<T>.sumOf(selector: (T) -> Int): Int {
-    var sum = 0
-    for (element in this) {
-        sum += selector(element)
-    }
-    return sum
-}
+val dx2 = intArrayOf(0, 1, 0, -1)
+val dy2 = intArrayOf(1, 0, -1, 0) 
+
+val dx3 = intArrayOf(1, -1, 1, -1)
+val dy3 = intArrayOf(1, 1, -1, -1)
+
+val dxdy1 = DxDy(dx1, dy1)
+val dxdy2 = DxDy(dx2, dy2)
+val dxdy3 = DxDy(dx3, dy3)
+
+val dxdyList = listOf(dxdy1, dxdy2, dxdy3)
+
+var posIdx = 0
+
+var result = 0
 
 fun main() {
-    val sc = Scanner(System.`in`)
-    n = sc.nextInt()
 
-    for (i in 0 until n) {
-        for (j in 0 until n) {
-            val bombPlace = sc.nextInt()
-            if (bombPlace > 0) {
-                bombPos.add(Pair(i, j))
-            }
+    val pos = positions[posIdx]
+    
+    recursive(pos.x, pos.y, graph)
+
+    println(result)
+}
+
+
+fun recursive(x: Int, y: Int, nowGraph: Array<IntArray>) {
+    posIdx++
+    var thisGraph = Array(n) {idx ->
+        nowGraph[idx].clone()
+    }
+    for(dxdy in dxdyList) {
+
+        val nowMoveCount = move(x, y, dxdy, thisGraph)
+        result = max(ans, result)
+        if(result == maxPossibleExplosionCount){
+            break
+        }
+        if(posIdx < bombCount) {
+            val nextPos = positions[posIdx]
+            recursive(nextPos.x, nextPos.y, thisGraph)
+            posIdx--
+        }
+        thisGraph = nowGraph.clone()
+        ans -= nowMoveCount
+    }
+}
+
+fun move(x: Int, y: Int, dxdy: DxDy, nowGraph: Array<IntArray>): Int {
+    var nowMoveCount = 0
+    for(direction in 0 .. 3) {
+        val nextX = x + dxdy.dx[direction]
+        val nextY = y + dxdy.dy[direction]
+
+        if(canMoveTo(nextX, nextY, nowGraph)) {
+            nowMoveCount++
+            ans++
+            nowGraph[nextX][nextY] = 1
         }
     }
+    return nowMoveCount
+}
 
-    findMaxArea(0)
-    println(ans)
+fun canMoveTo(x: Int, y: Int, nowGraph: Array<IntArray>): Boolean {
+    if(x < 0 || y < 0) return false
+    if(x >= n || y >= n) return false
+    if(nowGraph[x][y] == 1) return false
+    
+    return true
 }
