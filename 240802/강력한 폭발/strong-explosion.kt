@@ -1,8 +1,3 @@
-/*
-1 sec
-80MB
-*/
-
 import java.util.*
 import kotlin.math.*
 
@@ -29,7 +24,7 @@ val initialGraph = Array(n) { x ->
     }
 }
 
-var graph = initialGraph.clone()
+var graph = initialGraph.deepCopy()
 val maxPossibleExplosionCount = bombCount * 5
 
 var ans = bombCount
@@ -54,51 +49,37 @@ val dxdy3 = DxDy(dx3, dy3)
 
 val dxdyList = listOf(dxdy1, dxdy2, dxdy3)
 
-var posIdx = 0
-
 var result = 0
 
 fun main() {
-
-    val pos = positions[posIdx]
-    
-    recursive(pos.x, pos.y, graph)
-
+    recursive(0, graph)
     println(result)
 }
 
-
-fun recursive(x: Int, y: Int, nowGraph: Array<IntArray>) {
-    posIdx++
-    var thisGraph = Array(n) {idx ->
-        nowGraph[idx].clone()
+fun recursive(posIdx: Int, nowGraph: Array<IntArray>) {
+    if (posIdx == positions.size) {
+        result = max(result, ans)
+        return
     }
-    for(dxdy in dxdyList) {
 
-        val nowMoveCount = move(x, y, dxdy, thisGraph)
-        result = max(ans, result)
-        if(result == maxPossibleExplosionCount){
-            break
-        }
-        if(posIdx < bombCount) {
-            val nextPos = positions[posIdx]
-            recursive(nextPos.x, nextPos.y, thisGraph)
-            posIdx--
-        }
-        thisGraph = nowGraph.clone()
+    val (x, y) = positions[posIdx]
+    for (dxdy in dxdyList) {
+        val tempGraph = nowGraph.deepCopy()
+        val nowMoveCount = move(x, y, dxdy, tempGraph)
+        ans += nowMoveCount
+        recursive(posIdx + 1, tempGraph)
         ans -= nowMoveCount
     }
 }
 
 fun move(x: Int, y: Int, dxdy: DxDy, nowGraph: Array<IntArray>): Int {
     var nowMoveCount = 0
-    for(direction in 0 .. 3) {
+    for (direction in 0..3) {
         val nextX = x + dxdy.dx[direction]
         val nextY = y + dxdy.dy[direction]
 
-        if(canMoveTo(nextX, nextY, nowGraph)) {
+        if (canMoveTo(nextX, nextY, nowGraph)) {
             nowMoveCount++
-            ans++
             nowGraph[nextX][nextY] = 1
         }
     }
@@ -106,9 +87,11 @@ fun move(x: Int, y: Int, dxdy: DxDy, nowGraph: Array<IntArray>): Int {
 }
 
 fun canMoveTo(x: Int, y: Int, nowGraph: Array<IntArray>): Boolean {
-    if(x < 0 || y < 0) return false
-    if(x >= n || y >= n) return false
-    if(nowGraph[x][y] == 1) return false
-    
+    if (x < 0 || y < 0) return false
+    if (x >= n || y >= n) return false
+    if (nowGraph[x][y] == 1) return false
+
     return true
 }
+
+fun Array<IntArray>.deepCopy() = Array(size) { this[it].clone() }
