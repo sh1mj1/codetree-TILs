@@ -22,7 +22,7 @@ var ans = 0
 
 fun main() {
     input()
-    
+
     lines.sort()
 
     for(line in lines) {
@@ -30,7 +30,7 @@ fun main() {
             continue
         }
 
-        for(i in line.x .. line.y) {
+        for(i in 1 .. line.y) {
             visited[i] = true
         }
         ans++
