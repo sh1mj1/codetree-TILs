@@ -1,4 +1,4 @@
-val n = readLine().toInt()
+val n = readln().toInt()
 
 var count = 0
 
