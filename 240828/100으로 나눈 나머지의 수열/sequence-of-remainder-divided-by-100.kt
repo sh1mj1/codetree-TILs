@@ -1,5 +1,5 @@
 val N = readln().toInt()
-val arr = IntArray(N + 1) { 0 }
+val arr = IntArray(21) { 0 }
 
 
 fun f(num: Int): Int {
