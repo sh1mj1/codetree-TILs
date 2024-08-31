@@ -9,7 +9,15 @@ val pastHour = 11
 val pastMin = 11
 
 fun main() {
-    if(day < pastDay || hour < pastHour || min < pastMin) {
+    if(day < pastDay) {
+        println("-1")
+        return
+    }
+    if(day == pastDay && hour < pastHour) {
+        println("-1")
+        return
+    }
+    if(day == pastDay && hour == pastHour && min < pastMin) {
         println("-1")
         return
     }
