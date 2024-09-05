@@ -11,8 +11,6 @@ val dayOfMonth = intArrayOf(
     31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
 ) // 0 ~ 11
 
-
-
 val seqOfWeek = mapOf(
     "Mon" to 0,
     "Tue" to 1,
@@ -20,7 +18,7 @@ val seqOfWeek = mapOf(
     "Thu" to 3,
     "Fri" to 4,
     "Sat" to 5,
-    "Sun" to 6
+    "Sun" to 6,
 )
 
 
@@ -32,25 +30,13 @@ fun main() {
 
     val diff = future - past
 
-    val dayOfFuture = diff % 7
-
     val targetDay = seqOfWeek[inputDay] ?: throw error("invalid inputDay")
 
-    val ans = diff / 7
-    if(dayOfFuture == 0){    
-        println(ans)
-        return
+    var ans = 0
+    if(diff - targetDay >= 0) {
+        ans = (diff - targetDay) / 7
+    } else {
+        ans = (diff - targetDay) / 7
     }
-
-    if(diff >= targetDay) {
-        println(ans)
-        return
-    }
-    if(diff < targetDay) {
-        if(ans > 1) {
-            println(ans -1)
-            return
-        } 
-        println(ans)
-    }
+    println(ans)
 }
