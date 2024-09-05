@@ -11,13 +11,21 @@ val dayOfMonth = intArrayOf(
     31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
 ) // 0 ~ 11
 
-val seqOfWeek = intArrayOf(
-    0, 1, 2, 3, 4, 5, 6
-) // Mon ~ Sun
+
+
+val seqOfWeek = mapOf(
+    "Mon" to 0,
+    "Tue" to 1,
+    "Wed" to 2,
+    "Thu" to 3,
+    "Fri" to 4,
+    "Sat" to 5,
+    "Sun" to 6
+)
+
 
 fun main() {
     val past = d1
-
     val future = (m1 until m2).sumOf { m ->
         dayOfMonth[m]
     } + d2
@@ -26,9 +34,23 @@ fun main() {
 
     val dayOfFuture = diff % 7
 
-    if(dayOfFuture == 0){
-        println(diff / 7 + 1)
+    val targetDay = seqOfWeek[inputDay] ?: throw error("invalid inputDay")
+
+    val ans = diff / 7
+    if(dayOfFuture == 0){    
+        println(ans)
         return
     }
-    println(diff / 7)
+
+    if(diff >= targetDay) {
+        println(ans)
+        return
+    }
+    if(diff < targetDay) {
+        if(ans > 1) {
+            println(ans -1)
+            return
+        } 
+        println(ans)
+    }
 }
