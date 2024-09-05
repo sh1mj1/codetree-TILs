@@ -25,7 +25,7 @@ val seqOfWeek = mapOf(
 fun main() {
     val past = d1
     val future = (m1 until m2).sumOf { m ->
-        dayOfMonth[m]
+        dayOfMonth[m-1]
     } + d2
 
     val diff = future - past
