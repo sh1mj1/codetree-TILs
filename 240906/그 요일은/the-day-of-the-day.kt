@@ -32,12 +32,12 @@ fun main() {
 
     val targetDay = seqOfWeek[inputDay] ?: throw error("invalid inputDay")
 
-    var lastDay = diff % 7
-
     var ans = 0
-
-    if(lastDay > 0) {
-        ans = (diff + 1 - targetDay) / 7
+    if(diff > targetDay) {
+        ans = (diff + 1) / 7
+    }else {
+        ans = 0
     }
+
     println(ans)
 }
