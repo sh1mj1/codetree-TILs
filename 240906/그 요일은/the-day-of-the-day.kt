@@ -34,7 +34,7 @@ fun main() {
 
     var ans = 0
     if(diff > targetDay) {
-        ans = (diff + 1) / 7
+        ans = (diff + 7 - targetDay) / 7
     }else {
         ans = 0
     }
