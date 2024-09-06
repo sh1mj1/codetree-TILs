@@ -13,8 +13,6 @@ fun main() {
 
         decimal = decimal / 2
     }
-    for(i in ansBits.reversed()) {
-        print(i)
-    }
+    println(ansBits.reversed().joinToString(""))
 
 }
