@@ -8,7 +8,7 @@ fun main() {
         return
     }
     binarySeq.forEach { 
-        ans = 2 * it + 1
+        ans = 2 * ans + it
     }
     println(ans)
 }
