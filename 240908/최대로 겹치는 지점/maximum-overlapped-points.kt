@@ -6,7 +6,6 @@ var ans = 0
 fun main() {
     repeat(n) {
         val line = readln().split(" ").map { it.toInt() }
-        println(line.toString())
         val x1 = line[0]
         val x2 = line[1]
         for(i in x1 .. x2) {
