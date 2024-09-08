@@ -12,8 +12,8 @@ fun main() {
         val x1 = line[0] + 100
         val x2 = line[1] + 100
         for(i in x1+1 .. x2) {
-            arr[i]++
-            if(ans < arr[i]) {
+            interval[i]++
+            if(ans < interval[i]) {
                 ans++
             }
         }
