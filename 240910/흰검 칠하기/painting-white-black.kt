@@ -19,9 +19,7 @@ fun main() {
                 for(i in 0 until count) {
                     val nowSection = sections[nowPoint]
                     if(nowSection.recent == 3) {
-                        nowPoint--
-                        if(i == count-1) break
-                        continue
+                        break
                     }
                     nowSection.white++
 
@@ -40,9 +38,7 @@ fun main() {
                 for(i in 0 until count) {
                     val nowSection = sections[nowPoint]
                     if(nowSection.recent == 3 ) {
-                        nowPoint++
-                        if(i == count-1) break
-                        continue
+                        break
                     }
                     
                     nowSection.black++
@@ -89,4 +85,8 @@ data class Section(
 5 L
 7 R
 4 L
+
+정답: 274 164 1496
+mine: 283 166 1502
+
 */
