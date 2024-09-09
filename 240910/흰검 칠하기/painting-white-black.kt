@@ -20,6 +20,7 @@ fun main() {
                     val nowSection = sections[nowPoint]
                     if(nowSection.recent == 3) {
                         nowPoint--
+                        if(i == count-1) break
                         continue
                     }
                     nowSection.white++
@@ -40,6 +41,7 @@ fun main() {
                     val nowSection = sections[nowPoint]
                     if(nowSection.recent == 3 ) {
                         nowPoint++
+                        if(i == count-1) break
                         continue
                     }
                     
@@ -79,3 +81,12 @@ data class Section(
     // 0: none, 1: black, 2: white, 3: gray
     var recent: Int
 )
+
+
+/*
+4
+4 R
+5 L
+7 R
+4 L
+*/
