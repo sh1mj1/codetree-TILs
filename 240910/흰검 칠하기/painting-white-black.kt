@@ -18,7 +18,7 @@ fun main() {
             "L" -> {
                 for(i in 0 until count) {
                     val nowSection = sections[nowPoint]
-                    if(nowSection.recent > 2) {
+                    if(nowSection.recent == 3) {
                         nowPoint--
                         if(i == count-1) break
                         continue
@@ -39,7 +39,7 @@ fun main() {
             "R" -> {
                 for(i in 0 until count) {
                     val nowSection = sections[nowPoint]
-                    if(nowSection.recent > 2 ) {
+                    if(nowSection.recent == 3 ) {
                         nowPoint++
                         if(i == count-1) break
                         continue
