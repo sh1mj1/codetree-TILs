@@ -19,8 +19,7 @@ fun main() {
                 for(i in 0 until count) {
                     val nowSection = sections[nowPoint]
                     if(nowSection.recent == 3) {
-                        nowPoint--
-                        continue
+                        break
                     }
                     nowSection.white++
 
@@ -30,7 +29,7 @@ fun main() {
                         nowSection.recent = 2
                     }
                     if(i == count-1) {
-                        continue
+                        break
                     }
                     nowPoint--
                 }
@@ -39,8 +38,7 @@ fun main() {
                 for(i in 0 until count) {
                     val nowSection = sections[nowPoint]
                     if(nowSection.recent == 3 ) {
-                        nowPoint++
-                        continue
+                        break
                     }
                     
                     nowSection.black++
@@ -50,7 +48,7 @@ fun main() {
                         nowSection.recent = 1
                     }
                     if(i == count-1) {
-                        continue
+                        break
                     }
                     nowPoint++
                 }
