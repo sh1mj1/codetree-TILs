@@ -45,14 +45,13 @@ fun main() {
         when(section.recent) {
             Color.BLACK -> {black++}
             Color.WHITE -> {white++}
-            else -> {}
+            Color.GRAY -> {}
         }
     }
     println("$white $black")
 }
 
 data class Section(
-    // 0: gray, 1: black, 2: white
     val recent: Color
 ) {
     fun flipLeft(): Section = Section(recent.flipLeft())
