@@ -28,10 +28,16 @@ fun main() {
     color(rectangles[1], 1)
     color(rectangles[2], 0)
 
+    
+    val minx = min(rectangles[0].x1 , rectangles[1].x1)
+    val maxX = max(rectangles[0].x2 , rectangles[1].x2)
+    val minY = min(rectangles[0].y1 , rectangles[1].y1)
+    val maxY = max(rectangles[0].y2 , rectangles[1].y2)
+
     var ans = 0
 
-    for(x in 0 until 2_001) {
-        for(y in 0 until 2_001) {
+    for(x in minx until maxX) {
+        for(y in minY until maxY) {
             if(axis[x][y] == 1) ans++
         }
     }
