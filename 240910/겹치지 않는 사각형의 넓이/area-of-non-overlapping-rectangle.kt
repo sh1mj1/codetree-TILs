@@ -1,3 +1,7 @@
+import kotlin.math.max
+import kotlin.math.min
+
+
 data class Rectangle(
     val x1: Int,
     val y1: Int,
@@ -23,12 +27,6 @@ fun main() {
     color(rectangles[0], 1)
     color(rectangles[1], 1)
     color(rectangles[2], 0)
-
-    
-    val minx = kotlin.math.max(rectangles[0].x1 , rectangles[1].x1)
-    val maxX = kotlin.math.max(rectangles[0].x2 , rectangles[1].x2)
-    val minY = kotlin.math.max(rectangles[0].y1 , rectangles[1].y1)
-    val maxY = kotlin.math.max(rectangles[0].y2 , rectangles[1].y2)
 
     var ans = 0
 
