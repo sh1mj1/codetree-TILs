@@ -1,7 +1,7 @@
 var ans = 0
 val n = readln().toInt()
 
-val sections = List(200_002) { Section(0) }
+val sections = MutableList(200_002) { Section(Color.GRAY) }
 var nowPoint = 100_000
 
 var mostRightPoint = 100_000
@@ -17,9 +17,7 @@ fun main() {
         when(direction) {
             "L" -> {
                 for(i in 0 until count) {
-                    val nowSection = sections[nowPoint]
-    // 0: gray, 1: black, 2: white
-                    nowSection.recent = 2
+                    sections[nowPoint] = sections[nowPoint].flipLeft()
 
                     if(i == count-1) {
                         break
@@ -29,9 +27,8 @@ fun main() {
             }
             "R" -> {
                 for(i in 0 until count) {
-                    val nowSection = sections[nowPoint]
-    // 0: gray, 1: black, 2: white
-                    nowSection.recent = 1
+                    sections[nowPoint] = sections[nowPoint].flipRight()
+
                     if(i == count-1) {
                         break
                     }
@@ -46,8 +43,8 @@ fun main() {
     var black = 0
     for(section in sections) {
         when(section.recent) {
-            1 -> {black++}
-            2 -> {white++}
+            Color.BLACK -> {black++}
+            Color.WHITE -> {white++}
             else -> {}
         }
     }
@@ -56,12 +53,19 @@ fun main() {
 
 data class Section(
     // 0: gray, 1: black, 2: white
-    var recent: Int
+    val recent: Color
 ) {
-    fun isBlack(): Boolean = recent == 1
+    fun flipLeft(): Section = Section(recent.flipLeft())
 
-    fun isWhite(): Boolean = recent == 2
-
-    fun isGray(): Boolean = recent == 0
-
+    fun flipRight(): Section = Section(recent.flipRight())
 }
+
+enum class Color{
+    GRAY,
+    BLACK,
+    WHITE,
+}
+
+fun Color.flipLeft(): Color = Color.WHITE
+
+fun Color.flipRight(): Color = Color.BLACK
