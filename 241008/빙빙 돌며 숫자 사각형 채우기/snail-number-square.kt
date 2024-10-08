@@ -7,7 +7,7 @@ val m = rc[1]
 val lastNum = n * m // 16
 
 val result = Array(n) {
-    IntArray(n) { 0 }
+    IntArray(m) { 0 }
 }
 
 val directions = arrayOf (
