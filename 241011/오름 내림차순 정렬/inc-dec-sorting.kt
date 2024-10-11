@@ -1,6 +1,6 @@
 fun main() {
     val n = readln().toInt()
-    val elements = readln().split(" ").map { it.toInt() }
+    val elements = readln().trim().split(" ").map { it.toInt() }
 
     val asending = elements.sorted()
     val descending = elements.sortedDescending()
