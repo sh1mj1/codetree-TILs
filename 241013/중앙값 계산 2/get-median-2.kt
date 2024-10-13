@@ -2,11 +2,11 @@ val n = readln().toInt()
 val numbers = readln().split(" ").map { it.toInt() }
 
 fun main() {
-    val sortedNumbers = numbers.sorted()
-    sortedNumbers.forEachIndexed{ idx, number ->
+    numbers.forEachIndexed{ idx, number ->
         if(idx % 2 == 0) {
             val midIdx = (idx+1) / 2
-            print("${sortedNumbers[midIdx]} ")
+            val sorted = numbers.slice(0..idx).sorted()
+            print("${sorted[midIdx]} ")
         }
     }
 }
