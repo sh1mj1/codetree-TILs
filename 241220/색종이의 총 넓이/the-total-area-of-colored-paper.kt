@@ -21,6 +21,7 @@ data class Papers(val papers: List<Paper>) {
         val totalArea = Array(200) {
             BooleanArray(200) {false}
         }
+
         papers.forEach { paper ->
             with(paper) {
                 for(x in bottomLeft.x until topRight.x) {
@@ -30,9 +31,7 @@ data class Papers(val papers: List<Paper>) {
                 }
             }
         }
-        
-        totalArea.sumOf { row -> row.count{ it } }
 
-        return area
+        return totalArea.sumOf { row -> row.count{ it } }
     }
 }
