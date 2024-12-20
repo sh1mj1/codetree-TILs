@@ -21,12 +21,13 @@ data class Papers(val papers: List<Paper>) {
         val totalArea = Array(200) {
             BooleanArray(200) {false}
         }
+        val offset = 100
 
         papers.forEach { paper ->
             with(paper) {
                 for(x in bottomLeft.x until topRight.x) {
                     for(y in bottomLeft.y until topRight.y) {
-                        totalArea[x][y] = true
+                        totalArea[x + 100][y + 100] = true
                     }
                 }
             }
