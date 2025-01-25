@@ -34,7 +34,7 @@ public class Main {
 
         for (String direction: directions) {
             if (direction.equals("1")) {
-                if (x + 1 >= n || x + 1 < 0) continue;
+                if (x + 1 >= m || x + 1 < 0) continue;
                 x++;
 
                 int tempRight = right;
@@ -49,7 +49,7 @@ public class Main {
                 left = tempDown;
                 down = tempRight;
             } else if (direction.equals("2")) {
-                if (x - 1 >= n || x - 1 < 0) continue;
+                if (x - 1 >= m || x - 1 < 0) continue;
 
                 x--;
 
@@ -65,7 +65,7 @@ public class Main {
                 right = tempDown;
                 down = tempLeft;
             } else if (direction.equals("3")) {
-                if (y - 1 >= m || y - 1 < 0) continue;
+                if (y - 1 >= n || y - 1 < 0) continue;
 
                 y--;
 
@@ -81,7 +81,7 @@ public class Main {
                 up = tempFront;
                 front = tempDown;
             } else if (direction.equals("4")) {
-                if (y + 1 >= m || y + 1 < 0) continue;
+                if (y + 1 >= n || y + 1 < 0) continue;
 
                 y++;
 
