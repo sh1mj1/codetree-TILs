@@ -7,38 +7,27 @@ public class Main {
         // input
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-    
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        int n = Integer.parseInt(st.nextToken());
 
-        st = new StringTokenizer(br.readLine());
-        int[] customers = new int[n];
-        for (int i = 0; i < n; i++) {
-            customers[i] = Integer.parseInt(st.nextToken());
-        }
+        int n = Integer.parseInt(br.readLine());
 
-        st = new StringTokenizer(br.readLine());
-        int leaderCap = Integer.parseInt(st.nextToken());
-        int memberCap = Integer.parseInt(st.nextToken());
+        StringTokenizer customerSt = new StringTokenizer(br.readLine());
 
-        long totalCount = n;
+        StringTokenizer teamConfig = new StringTokenizer(br.readLine());
+        int leaderCap = Integer.parseInt(teamConfig.nextToken());
+        int memberCap = Integer.parseInt(teamConfig.nextToken());
+
+        long totalCount = 0;
 
         for (int i = 0; i < n; i++) {
-            customers[i] -= leaderCap;
-        }
+            int customer = Integer.parseInt(customerSt.nextToken());
 
-        for (int customer: customers) {
-            if (customer <= 0) continue;
+            customer -= leaderCap;
+            totalCount++;
 
-            int tempMemberCount = customer / memberCap;
-            if (customer % memberCap == 0) {
-                totalCount += tempMemberCount;
-                continue;
+            if (customer > 0) {
+                totalCount += (customer + memberCap - 1) / memberCap;
             }
-
-            totalCount += (tempMemberCount + 1);
         }
-
         bw.write(String.valueOf(totalCount));
         bw.flush();
         bw.close();
