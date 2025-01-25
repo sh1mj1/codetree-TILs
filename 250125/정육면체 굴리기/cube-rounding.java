@@ -25,7 +25,7 @@ public class Main {
         
         for (int row = 0; row < n; row++) {
             st = new StringTokenizer(br.readLine());
-            for (int col = 0; col < n; col++) {
+            for (int col = 0; col < m; col++) {
                 board[row][col] = Integer.parseInt(st.nextToken());
             }
         }
