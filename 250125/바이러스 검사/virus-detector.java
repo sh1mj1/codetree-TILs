@@ -22,7 +22,7 @@ public class Main {
             int customer = Integer.parseInt(customerSt.nextToken());
 
             customer -= leaderCap;
-            totalCount++;   k
+            totalCount++;   
 
             if (customer > 0) {
                 totalCount += (customer + memberCap - 1) / memberCap;
