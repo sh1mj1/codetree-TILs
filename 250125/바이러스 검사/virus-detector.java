@@ -1,33 +1,46 @@
+import java.io.*;
 import java.util.*;
 
 // Cap: capacity
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         // input
-        Scanner sc = new Scanner(System.in);
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+    
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int n = Integer.parseInt(st.nextToken());
 
-        int n = sc.nextInt(); // restraurant count
+        st = new StringTokenizer(br.readLine());
         int[] customers = new int[n];
         for (int i = 0; i < n; i++) {
-            customers[i] = sc.nextInt();
+            customers[i] = Integer.parseInt(st.nextToken());
         }
 
-        int leaderCap = sc.nextInt();
-        int memberCap = sc.nextInt();
-        
-        long total = n;
+        st = new StringTokenizer(br.readLine());
+        int leaderCap = Integer.parseInt(st.nextToken());
+        int memberCap = Integer.parseInt(st.nextToken());
+
+        long totalCount = n;
+
         for (int i = 0; i < n; i++) {
             customers[i] -= leaderCap;
         }
 
-        for (int customer : customers) {
-            if (customer <= 0) continue; 
+        for (int customer: customers) {
+            if (customer <= 0) continue;
+
+            int tempMemberCount = customer / memberCap;
             if (customer % memberCap == 0) {
-                total += (customer / memberCap);
+                totalCount += tempMemberCount;
                 continue;
-            } 
-            total += (customer / memberCap + 1);
+            }
+
+            totalCount += (tempMemberCount + 1);
         }
-        System.out.println(total);
+
+        bw.write(String.valueOf(totalCount));
+        bw.flush();
+        bw.close();
     }
 }
