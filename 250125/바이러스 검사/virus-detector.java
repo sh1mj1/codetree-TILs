@@ -22,8 +22,11 @@ public class Main {
 
         for (int customer : customers) {
             if (customer <= 0) continue; 
-            int current = customer / memberCap + 1;
-            total += current;
+            if (customer % memberCap == 0) {
+                total += (customer / memberCap);
+                continue;
+            } 
+            total += (customer / memberCap + 1);
         }
         System.out.println(total);
     }
