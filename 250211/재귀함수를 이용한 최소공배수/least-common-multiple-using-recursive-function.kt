@@ -1,36 +1,38 @@
-val dividers = listOf(2, 3, 5, 7)
+val dividers = List(9) { i ->
+    10 - i
+}
+
 
 fun main() {
     val n = readln().toInt()
     val numbers = readln().trim().split(" ").map { it.toInt() }
-    
-    val result = dfs(0, numbers)
-    val answer = 2 * 3 * 5 * 7 * result.reduce { acc, value ->
-        acc * value
-    }
 
     println(
-        answer
+        dfs(
+            index = 0,
+            acc = numbers[0],
+            numbers = numbers, 
+            size = numbers.size
+        )
     )
 }
 
+fun dfs(index: Int, acc: Int, numbers: List<Int>, size: Int): Int {
+    if (index == size - 1) return acc
 
-fun dfs(index: Int, numbers: List<Int>): List<Int> {
-    if (index == 4) {
-        return numbers
-    }
     return dfs(
-        index + 1,
-        numbers.map {
-            quotientOrSame(dividers[index], it)
-        }
+        index = index + 1,
+        acc = lcm(acc, numbers[index + 1]),
+        numbers = numbers,
+        size = size
     )
 }
 
-
-fun quotientOrSame(divider: Int, num: Int): Int {
-    if (num % divider == 0) {
-        return num / divider
+fun lcm(a: Int, b: Int): Int {
+    for (d in dividers) {
+        if (a % d == 0 && b % d == 0) {
+            return d * (a / d) * (b / d)
+        }
     }
-    return num
+    return a * b
 }
