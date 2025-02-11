@@ -3,7 +3,7 @@
 fun main() {
     val n = readln().toInt()
     val grid = List(n) {
-        readln().split(" ").map { it.toInt() }
+        readln().trim().split(" ").map { it.toInt() }
     }
     val range = 0 until n
     val directions = listOf(
