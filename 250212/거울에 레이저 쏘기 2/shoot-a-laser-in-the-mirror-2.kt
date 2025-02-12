@@ -20,12 +20,24 @@ val rightStartRange = 3 * n + 1 .. 4 * n
 
 val range = 0 until n
 
+var num = 1
+var row = 0
+var col = 0
+var dirIdx = 0
+
 fun main() {
-    var num = 1
-    var row = 0
-    var col = 0
-    var dirIdx = 0
+    setStartPosition()
+    var count = 0
+
+    while (inRange(row, col)) {
+        count++
+        shoot()
+    }
     
+    println(count)
+}
+
+fun setStartPosition() {
     when (startNumber) {
         in downStartRange -> {
             dirIdx = 0
@@ -68,23 +80,9 @@ fun main() {
             } else {
                 n - seq
             }
-
         }
         else -> error("invalid startNumber")
     }
-
-    var count = 0
-
-    while (inRange(row, col)) {
-        count++
-        val (nextR, nextC, nextDirIdx) = shoot(row, col, dirIdx)
-
-        row = nextR
-        col = nextC
-        dirIdx = nextDirIdx
-    }
-    
-    println(count)
 }
 
 // 0: Down
@@ -92,31 +90,43 @@ fun main() {
 // 2: Up
 // 3: Right
 
-fun shoot(r: Int, c: Int, dirIdx: Int): Triple<Int, Int, Int> {
+fun shoot() {
     when (dirIdx) {
         0 -> {
-            if (grid[r][c] == '/') {
-                return Triple(r, c - 1, 1)
+            if (grid[row][col] == '/') {
+                col -= 1
+                dirIdx = 1
+            } else {
+                col += 1
+                dirIdx = 3
             }
-            return Triple(r, c + 1, 3)
         }
         1 -> {
-            if (grid[r][c] == '/') {
-                return Triple(r + 1, c, 0)
+            if (grid[row][col] == '/') {
+                row += 1
+                dirIdx = 0
+            } else {
+                row -= 1
+                dirIdx = 2
             }
-            return Triple(r - 1, c, 0)
         }
         2 -> {
-            if (grid[r][c] == '/') {
-                return Triple(r, c + 1, 3)
+            if (grid[row][col] == '/') {
+                col += 1
+                dirIdx = 3
+            } else {
+                col -= 1
+                dirIdx = 1
             }
-            return Triple(r, c - 1, 3)
         }
         3 -> {
-            if (grid[r][c] == '/') {
-                return Triple(r - 1, c, 2)
+            if (grid[row][col] == '/') {
+                row -= 1
+                dirIdx = 2
+            } else {
+                row += 1
+                dirIdx = 0
             }
-            return Triple(r + 1, c, 0)
         }
         else -> error("invalid dirIdx: $dirIdx")
     }
