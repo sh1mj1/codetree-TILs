@@ -8,8 +8,13 @@ fun main() {
     }
     val point = Point(0, 0)
     moves.forEach {
-        point.moveUntilOrigin(it)
+        if (point.moveAndMeetOrigin(it)) {
+            println(point.time)
+            return
+        }
     }
+    println("-1")
+    
 }
 
 
@@ -23,45 +28,39 @@ data class Point(
     private var col: Int,
 ) {
     var time = 0
-    fun moveUntilOrigin(move: Move) {
+    fun moveAndMeetOrigin(move: Move): Boolean {
         when(move.dir) {
             "E" -> {
                 for (count in move.count downTo 1) {
                     col++
                     time++
-                    printIfOrigin()
+                    if (isOrigin()) return true
                 }
             }
             "S" ->  {
                 for (count in move.count downTo 1) {
                     row++
                     time++
-                    printIfOrigin()
+                    if (isOrigin()) return true
                 }
             }
             "W" -> {
                 for (count in move.count downTo 1) {
                     col--
                     time++
-                    printIfOrigin()
+                    if (isOrigin()) return true
                 }
             }
             "N" -> {
                 for (count in move.count downTo 1) {
                     row--
                     time++
-                    printIfOrigin()
+                    if (isOrigin()) return true
                 }
             }
             else -> error("invalid direction")
         }
-    }
-
-    fun printIfOrigin() {
-        if (isOrigin()) {
-            println(time)
-            return
-        }
+        return false
     }
 
     fun isOrigin(): Boolean = row == 0 && col == 0
