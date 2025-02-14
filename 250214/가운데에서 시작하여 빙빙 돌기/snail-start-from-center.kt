@@ -1,86 +1,70 @@
+enum class Direction(val delta: Pair<Int, Int>) {
+    RIGHT(0 to 1),
+    UP(-1 to 0),
+    LEFT(0 to -1),
+    DOWN(1 to 0);
 
-val n = readln().toInt()
-val maxNum = n * n
-
-var r = n / 2
-var c = n / 2
-
-var num = 1
-var dirIdx = 0
-
-
-val range = 0 until n
-
-val grid = MutableList(n) {
-    MutableList(n) { 0 }
+    fun next(): Direction {
+        return values()[(ordinal + 1) % values().size]
+    }
 }
 
-var dirCount = 0
-var count = 0
-var cur = count
+data class Point(var row: Int, var col: Int) {
+    fun move(direction: Direction) {
+        row += direction.delta.first
+        col += direction.delta.second
+    }
+}
+
+class Grid(val size: Int) {
+    private val grid = MutableList(size) { MutableList(size) { 0 } }
+
+    fun isInBounds(point: Point): Boolean {
+        return point.row in 0 until size && point.col in 0 until size
+    }
+
+    fun setValue(point: Point, value: Int) {
+        if (isInBounds(point)) {
+            grid[point.row][point.col] = value
+        }
+    }
+
+    fun printGrid() {
+        grid.forEach { row -> println(row.joinToString(" ")) }
+    }
+}
+
+class SpiralWriter(private val grid: Grid) {
+    private var point = Point(grid.size / 2, grid.size / 2)
+    private var num = 1
+    private var direction = Direction.RIGHT
+    private var dirCount = 0
+    private var stepSize = 0
+
+    fun writeAll() {
+        val maxNum = grid.size * grid.size
+
+        while (num <= maxNum) {
+            if (dirCount % 2 == 0) stepSize++
+
+            repeat(stepSize) {
+                if (num > maxNum) return
+                grid.setValue(point, num++)
+                point.move(direction)
+            }
+
+            dirCount++
+            direction = direction.next()
+        }
+    }
+}
 
 fun main() {
-    writeAll()
+    val n = readln().toInt()
 
-    range.forEach { row -> 
-        range.forEach { col -> 
-            print("${grid[row][col]} ")
-        }
-        println()
-    }
+    val grid = Grid(n)
+    val spiralWriter = SpiralWriter(grid)
+
+    spiralWriter.writeAll()
+    grid.printGrid()
 }
-
-
-fun writeAll() {
-    while (num <= maxNum && inRange()) {
-        if (dirCount % 2 == 0) {
-            count++
-        }
-        cur = count
-        
-        when (dirIdx) {
-            // RIGHT
-            0 -> {
-                while (cur > 0 && inRange()) {
-                    grid[r][c++] = num++
-                    cur--
-                }
-                dirCount++
-                dirIdx = 1
-            }
-
-            // UP
-            1 -> {
-                while (cur > 0 && inRange()) {
-                    grid[r--][c] = num++
-                    cur--
-                }
-                dirCount++
-                dirIdx = 2
-            }
-
-            // LEFT
-            2 -> {
-                while (cur > 0 && inRange()) {
-                    grid[r][c--] = num++
-                    cur--
-                }
-                dirCount++
-                dirIdx = 3
-            }
-
-            // DOWN
-            3 -> {
-                while (cur > 0 && inRange()) {
-                    grid[r++][c] = num++
-                    cur--
-                }
-                dirCount++
-                dirIdx = 0
-            }
-        }
-    }
-
-}
-
-fun inRange(): Boolean = r in range && c in range
