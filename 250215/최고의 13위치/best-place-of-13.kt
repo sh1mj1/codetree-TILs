@@ -31,15 +31,8 @@ data class SlidingWindow(
         }
     }
 
-    fun canMove(range: IntRange): Boolean {
-        if (endCol + 1 in range) {
-            return true
-        }
-        if (row + 1 in range) {
-            return true
-        }
-        return false
-    }
+    fun canMove(range: IntRange): Boolean = 
+        (endCol + 1 in range) || (row + 1 in range)
 
     fun move(range: IntRange) {
         if (endCol + 1 in range) {
