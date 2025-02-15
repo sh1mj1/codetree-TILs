@@ -4,19 +4,12 @@ val n = readln().toInt()
 val people = readln().trim().split(" ").map(String::toInt)
 
 fun main() {
-    var answer = Int.MAX_VALUE
 
-    for (i in people.indices) {
-        var sum = 0
-
-        for (j in people.indices) {
-            sum = sum + abs(i - j) * people[j]
+    println(
+        people.withIndex().minOf { (targetIdx, _) -> 
+            people.withIndex().sumOf { (currentIdx, currentPeopleCount) -> 
+                abs(targetIdx - currentIdx) * currentPeopleCount
+            }
         }
-        
-        if (answer >= sum) {
-            answer = sum
-        }
-    }
-
-    println(answer)
+    )
 }
