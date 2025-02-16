@@ -8,28 +8,14 @@ fun main() {
         Point(x, y)
     }
 
-    var shortestDistance = Int.MAX_VALUE
-
-    for (skipPoint in 1 .. n - 2) {
-        var currentShortDistance = 0
-        
-        var i = 0
-        while (i in 0 .. n - 2) {
-            if (i + 1 == skipPoint) {
-                val current = points[i].distacne(points[i + 2])
-                currentShortDistance += current
-                i += 2
-                continue
-            }
-            val current = points[i].distacne(points[i + 1])
-            currentShortDistance += current
-            i++
-        }
-        shortestDistance = min(currentShortDistance, shortestDistance)
+    val answer = (1 .. n - 2).minOf { skipPoint ->
+        points.filterIndexed { i, _ -> i != skipPoint }
+              .zipWithNext { a, b -> a.distacne(b) }
+              .sum()
     }
 
     println(
-        shortestDistance
+        answer
     )
 }
 
