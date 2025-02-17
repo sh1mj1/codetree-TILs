@@ -24,29 +24,12 @@ fun main() {
     println(validPasswords.size)
 }
 
-
-
-fun validPasswords(password: List<Int>): List<Triple<Int, Int, Int>> {
+fun validPasswords(password: List<Int>): Set<Triple<Int, Int, Int>> {
     return adjacents[password[0]].flatMap { i ->
         adjacents[password[1]].flatMap { j ->
             adjacents[password[2]].map { k ->
                 Triple(i, j, k)
             }
         }
-    }
+    }.toSet()
 }
-
-
-/*
-
-// 2️⃣ 가능한 조합을 함수형 API로 생성 (`O(1)`)
-fun generateValidPasswords(password: List<Int>) =
-    adjacents[password[0]].flatMap { i ->
-        adjacents[password[1]].flatMap { j ->
-            adjacents[password[2]].map { k ->
-                Triple(i, j, k)
-            }
-        }
-    }.toSet() // `Set`으로 변환하여 중복 제거
-
-*/
