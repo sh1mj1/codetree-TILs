@@ -8,7 +8,7 @@ fun main() {
     val answer = (0 until n).minOf { startIdx ->
         people.withIndex().sumOf { (idx, peopleCount) -> 
             val targetIdx = (idx + startIdx) % n
-            targetIdx * value
+            (targetIdx * peopleCount)
         }
     }
 
