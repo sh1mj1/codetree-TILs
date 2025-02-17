@@ -13,26 +13,28 @@ val adjacents = List(n + 1) { i ->
 }
 
 val range = 1..n
+val numbersSet = (1..n).map{ it }.toSet()
 
 fun main() {
-    range.sumOf { i ->
-        range.sumOf { j -> 
-            range.count { k ->
-                val target = Triple(i, j, k)
-                valid(password1, target) || valid(password2, target)
-            }
-        }
-    }.let(::println)
+    val validPasswords = generateValidPasswords(password1) union generateValidPasswords(password2)
+    println(validPasswords.size)
 }
-
-private fun valid(password: List<Int>, target: Triple<Int, Int, Int>): Boolean =
-    target.first in adjacents[password[0]] &&
-    target.second in adjacents[password[1]] && 
-    target.third in adjacents[password[2]]
 
 private fun adjacentNumber(number: Int, distance: Int): Int {
     return ((number + distance + n) % n).let {
         if (it == 0) n
         else it
     }
+}
+
+fun generateValidPasswords(password: List<Int>): Set<Triple<Int, Int, Int>> {
+    val validPasswords = mutableSetOf<Triple<Int, Int, Int>>()
+    for (i in adjacents[password[0]]) {
+        for (j in adjacents[password[1]]) {
+            for (k in adjacents[password[2]]) {
+                validPasswords.add(Triple(i, j, k))
+            }
+        }
+    }
+    return validPasswords
 }
