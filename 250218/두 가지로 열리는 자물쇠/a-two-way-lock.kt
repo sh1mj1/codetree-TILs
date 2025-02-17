@@ -4,11 +4,11 @@ val password2 = readln().trim().split(" ").map(String::toInt)
 
 val adjacents = List(n + 1) { i ->
     setOf(
-        (i - 2 + n) % n + 1, 
-        (i - 1 + n) % n + 1,
-        i + 1,
-        (i + 1) % n + 1,
-        (i + 2) % n + 1
+        ((i - 2 + n) % n).let { if (it == 0) n else it },  
+        ((i - 1 + n) % n).let { if (it == 0) n else it },  
+        i,  
+        ((i + 1) % n).let { if (it == 0) n else it },  
+        ((i + 2) % n).let { if (it == 0) n else it }
     )
 }
 
