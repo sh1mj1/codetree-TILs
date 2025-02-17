@@ -1,24 +1,20 @@
 import kotlin.math.abs
-import kotlin.math.min
+
 
 fun main() {
     val abilities = readln().trim().split(" ").map(String::toInt)
     val totalSum = abilities.sum()
     val size = abilities.size
 
-
-
-
-    var answer = Int.MAX_VALUE
-    for (i in 0 until size) {
-        for (j in i + 1 until size) {
-            for (k in j + 1 until size) {
+    val asnwer = (0 until size - 2).minOf { i ->
+        (i + 1 until size - 1).minOf { j ->
+            (j + 1 until size).minOf { k ->
                 val teamSum = abilities[i] + abilities[j] + abilities[k]
                 val otherTeamSum = totalSum - teamSum
-
-                answer = min(answer, abs(teamSum - otherTeamSum))
+                abs(teamSum - otherTeamSum)
             }
         }
     }
+
     println(answer)
 }
