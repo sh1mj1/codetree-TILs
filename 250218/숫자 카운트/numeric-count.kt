@@ -9,14 +9,24 @@ fun main() {
     }
 
     val range = 1 .. 9
-    val allNumbers = allNumbers(range)
 
-    allNumbers.count { numbers ->
-        queries.all { query -> query.possible(numbers) }
-    }.let(::println)
+    var count = 0
+
+    for (i in range) {
+        for (j in range) {
+            if (i == j) continue
+            for (k in range) {
+                if (k == i || k == j) continue
+                val candidate = listOf(i, j, k)
+
+                if (queries.all { it.possible(candidate) }) {
+                    count++
+                }
+            }
+        }
+    }
+    println(count)
 }
-
-
 
 data class Query(
     val number: String,
@@ -36,11 +46,3 @@ data class Query(
     }
 }
 
-fun allNumbers(range: IntRange): List<List<Int>> =
-    range.flatMap { i ->
-        range.filter { it != i }.flatMap { j ->
-            range.filter { it != i && it != j }.map { k ->
-                listOf(i, j, k)
-            }
-        }
-    }
