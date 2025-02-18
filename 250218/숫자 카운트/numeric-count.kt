@@ -12,14 +12,14 @@ fun main() {
         )
     }
 
-    val allNumbers = mutableListOf<List<Int>>()
-
-    for (i in 1 .. 9) {
-        for (j in 1.. 9) {
-            if (j != i) {
-                for (k in 1 .. 9) {
-                    if (k != j && k != i) {
-                        allNumbers.add(listOf(i, j, k))
+    val allNumbers = sequence {
+        for (i in 1..9) {
+            for (j in 1..9) {
+                if (j != i) {
+                    for (k in 1..9) {
+                        if (k != j && k != i) {
+                            yield(listOf(i, j, k))
+                        }
                     }
                 }
             }
