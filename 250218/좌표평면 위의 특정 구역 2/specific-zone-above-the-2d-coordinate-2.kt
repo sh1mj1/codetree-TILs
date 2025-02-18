@@ -9,7 +9,7 @@ fun main() {
         }
     }
 
-    points.map { skipped ->
+    points.minOf { skipped ->
         var minX = Int.MAX_VALUE
         var minY = Int.MAX_VALUE
         var maxX = Int.MIN_VALUE
@@ -23,7 +23,7 @@ fun main() {
         }
 
         (maxY - minY) * (maxX - minX)
-    }.minOf { it }.let(::println)
+    }.let(::println)
 
 }
 
