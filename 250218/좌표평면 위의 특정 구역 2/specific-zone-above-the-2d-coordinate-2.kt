@@ -9,33 +9,23 @@ fun main() {
         }
     }
 
-    val areas = mutableListOf<Int>()
-
-
-    for (skipped in points) {
-        val currentPoints = points.filter { it != skipped }
-
+    points.map { skipped ->
         var minX = Int.MAX_VALUE
         var minY = Int.MAX_VALUE
         var maxX = Int.MIN_VALUE
         var maxY = Int.MIN_VALUE
-
-
-        for (point in currentPoints) {
+        
+        points.filter { it != skipped }.forEach { point ->
             minX = min(minX, point.x)
             minY = min(minY, point.y)
             maxX = max(maxX, point.x)
             maxY = max(maxY, point.y)
         }
 
-        ((maxY - minY) * (maxX - minX)).let{
-            areas.add(it)
-        }
-    }
+        (maxY - minY) * (maxX - minX)
+    }.minOf { it }.let(::println)
 
-    areas.minOf { it }.let(::println)
 }
-
 
 data class Point(
     val x: Int,
