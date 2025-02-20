@@ -1,28 +1,38 @@
+import java.util.Scanner
+
 fun main() {
-    val n = readln().toInt()
+    val scanner = Scanner(System.`in`)
+    val n = scanner.nextInt()
 
-    val lines = List(n) {
-        val (x1, x2) = readln().trim().split(" ").map(String::toInt)
-        Line(x1, x2)
+    val x1 = IntArray(n)
+    val x2 = IntArray(n)
+
+    for (i in 0 until n) {
+        x1[i] = scanner.nextInt()
+        x2[i] = scanner.nextInt()
     }
 
-    lines.count { standard ->
-        lines.any {
-            it != standard && standard.isOverlapped(it)
+    var ans = 0
+
+    // 다른 선분과 겹치지 않는 선분의 수를 구합니다.
+    for (i in 0 until n) {
+        // i번째 선분이 다른 선분과 겹치지 않는지 확인합니다.
+        var overlap = false
+
+        for (j in 0 until n) {
+            // 자기 자신은 제외합니다.
+            if (j == i) continue
+
+            // x1이 큰 쪽 선분이 x2가 더 작다면 겹치게 됩니다.
+            if ((x1[i] <= x1[j] && x2[i] >= x2[j]) || (x1[i] >= x1[j] && x2[i] <= x2[j])) {
+                overlap = true
+                break
+            }
         }
-    }.let(::println)
-}
 
-data class Line(
-    val x1: Int,
-    val x2: Int,
-) {
-    fun isOverlapped(other: Line): Boolean {
-        val minX1 = minOf(x1, x2)
-        val maxX1 = maxOf(x1, x2)
-        val minX2 = minOf(other.x1, other.x2)
-        val maxX2 = maxOf(other.x1, other.x2)
-
-    return (minX1 <= minX2 && maxX1 >= maxX2) || (minX1 >= minX2 && maxX1 <= maxX2)
+        // 겹치지 않았다면 정답의 개수에 하나를 추가합니다.
+        if (!overlap) ans++
     }
+
+    println(ans)
 }
