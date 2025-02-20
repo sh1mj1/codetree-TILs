@@ -27,7 +27,7 @@ data class Line(
 
         val overlappedPointY = (other.yIntercept.toFloat() - yIntercept.toFloat()) / (slope - other.slope)
 
-        return overlappedPointY >= 0.0 && overlappedPointY <= 1
+        return overlappedPointY > 0.0 && overlappedPointY < 1
     }
 }
 
