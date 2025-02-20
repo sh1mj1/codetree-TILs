@@ -8,13 +8,15 @@ fun main() {
         Point(x, y)
     }
 
-    val triangles = points.flatMap { p1 ->
-        points.flatMap { p2 ->
-            points.map { p3 ->
-                Triangle(p1, p2, p3)
+    val triangles = mutableSetOf<Triangle>()
+
+    for (i in 0 until n - 2) {
+        for (j in i + 1 until n -1) {
+            for (k in j + 1 until n) {
+                triangles.add(Triangle(points[i], points[j], points[k]))
             }
         }
-    }.toSet()
+    }
 
     triangles.map { triangle ->
         triangle.baseLine() * triangle.height()
