@@ -8,20 +8,18 @@ fun main() {
         Worker(a, b)
     }
 
-    val maxOperatingTime = workers.indices.maxOf { i ->
+    workers.indices.maxOf { i ->
         workers
-            .filterIndexed { index, _ -> index != i }
-            .flatMap { it.workTimeRange }
+            .filterIndexed { index, _ -> index != i}
+            .flatMap(Worker::workTimeRange)
             .toSet()
             .size
-    }
-
-    println(maxOperatingTime)
+    }.let(::println)
 }
 
 data class Worker(
     val workStartTime: Int,
     val workEndTime: Int,
 ) {
-    val workTimeRange: Set<Int> = (workStartTime until workEndTime).toSet()
+    val workTimeRange: IntRange = workStartTime until workEndTime
 }
