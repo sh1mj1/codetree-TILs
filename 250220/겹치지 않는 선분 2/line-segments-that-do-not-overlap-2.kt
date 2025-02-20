@@ -20,15 +20,23 @@ data class Line(
     val p2: Point
 ) {
     val slope: Float = p2.x.toFloat() - p1.x.toFloat()
-    val yIntercept: Int = p1.x
+    val xIntercept: Int = p1.x
 
-    fun isOverlapped(other: Line): Boolean {
-        if (slope == other.slope) return false
+ fun isOverlapped(other: Line): Boolean {
+    if (slope == other.slope) return false // 평행한 경우
 
-        val overlappedPointY = (other.yIntercept.toFloat() - yIntercept.toFloat()) / (slope - other.slope)
+    val intersectY = (other.xIntercept.toFloat() - xIntercept.toFloat()) / (slope - other.slope)
 
-        return overlappedPointY > 0.0 && overlappedPointY < 1
-    }
+    if (intersectY <= 0 || intersectY >= 1) return false // y 값이 범위 내에 있어야 함
+
+    val intersectX = xIntercept + slope * intersectY
+
+    val minX1 = minOf(p1.x, p2.x)
+    val maxX1 = maxOf(p1.x, p2.x)
+    val minX2 = minOf(other.p1.x, other.p2.x)
+    val maxX2 = maxOf(other.p1.x, other.p2.x)
+
+    return intersectX in minX1..maxX1 && intersectX in minX2..maxX2
 }
 
 data class Point(
