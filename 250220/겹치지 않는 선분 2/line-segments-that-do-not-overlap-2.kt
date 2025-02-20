@@ -5,7 +5,7 @@ fun main() {
 
     val lines = List(n) {
         val (x1, x2) = readln().trim().split(" ").map(String::toInt)
-        Line(Point(x1, 0),Point(x2, 0))
+        Line(Point(x1, 0),Point(x2, 1))
     }
 
     lines.count { stand ->
