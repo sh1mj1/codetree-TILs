@@ -6,8 +6,8 @@ fun main() {
 
     var maxStudents = 0
 
-    for (discountIndex in 0 until studentsCount - 1) {
-        val totalCost = prefixSums[discountIndex] + prices[discountIndex + 1] / 2
+    for (discountIndex in 0 until studentsCount) {
+        val totalCost = prefixSums[discountIndex + 1] -  prices[discountIndex] / 2
 
         if (totalCost <= budget) {
             maxStudents = discountIndex + 1
