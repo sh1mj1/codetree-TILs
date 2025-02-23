@@ -23,5 +23,6 @@ fun main() {
             }
         }
     }
+    println(studentsCount)
 
 }
