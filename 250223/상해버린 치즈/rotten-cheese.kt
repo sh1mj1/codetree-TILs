@@ -1,4 +1,4 @@
-
+import kotlin.math.max
 
 fun main() {
     val (peopleCount, cheeseCount, eatCount, hurtCount) = readln().trim().split(" ").map(String::toInt)
@@ -12,18 +12,34 @@ fun main() {
         HurtHistory(personIdx, hurtTime)
     }
 
-    val hurtPeople = hurtHistories.map { it.personIdx }.toMutableSet()
+    val possibleBadCheese = MutableList(cheeseCount) { it + 1 }
 
-    eatHistories.forEach { eatHistory ->
-        if (!hurtPeople.contains(eatHistory.personIdx)) {
-            hurtPeople.add(eatHistory.personIdx)
+    hurtHistories.forEach { hurtHistory ->
+        val tempPossibleBadCheese = eatHistories.filter {
+            it.eatTime < hurtHistory.hurtTime && it.personIdx == hurtHistory.personIdx
+        }.map {
+            it.cheeseIdx
         }
-        if (hurtPeople.count() == peopleCount) {
-            return@forEach
-        }
+
+        val goodCheese = possibleBadCheese - tempPossibleBadCheese
+        possibleBadCheese.removeAll(goodCheese)
     }
-    println(hurtPeople.count())
 
+    var maxHurtPeopleCount = 0
+
+    for (badCheese in possibleBadCheese) {
+        val tempMaxHurtPeopleCount = eatHistories
+            .filter { eatHistory -> eatHistory.cheeseIdx == badCheese }
+            .map { it.personIdx }
+            .toSet()
+            .count()
+
+        maxHurtPeopleCount = max(tempMaxHurtPeopleCount, maxHurtPeopleCount)
+    }
+
+    println(
+        maxHurtPeopleCount
+    )
 }
 
 data class EatHistory(
