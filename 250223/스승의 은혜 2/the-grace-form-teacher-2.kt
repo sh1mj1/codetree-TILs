@@ -1,28 +1,17 @@
-
 fun main() {
     val (studentsCount, budget) = readln().trim().split(" ").map(String::toInt)
+    val prices = List(studentsCount) { readln().toInt() }
 
-    val prices = List(studentsCount) {
-        readln().toInt()
-    }
-    
-    val sortedPrices = prices.sortedBy { it }
+    val sortedPrices = prices.sorted()
 
-    sortedPrices.forEach { price ->
-        for (i in 1 until studentsCount) {
-            val sum = (0 .. i).sumOf {
-                if (it == i) 
-                    sortedPrices[it] / 2
-                else 
-                    sortedPrices[it]
-            }
+    val prefixSums = sortedPrices.runningFold(0) { acc, price -> acc + price }
 
-            if (sum > budget) {
-                println(i)
-                return
-            }
-        }
-    }
-    println(studentsCount)
+    val maxStudents = (0 until studentsCount).maxOfOrNull { discountIndex ->
+        (0..studentsCount).firstOrNull { i ->
+            val totalCost = prefixSums[i] - sortedPrices.getOrNull(discountIndex)?.div(2) ?: 0
+            totalCost > budget
+        } ?: studentsCount
+    } ?: studentsCount
 
+    println(maxStudents)
 }
