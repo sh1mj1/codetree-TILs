@@ -12,7 +12,7 @@ fun main() {
         HurtHistory(personIdx, hurtTime)
     }
 
-    val hurtPeople = hurtHistories.map { it.personIdx }.toMutableList()
+    val hurtPeople = hurtHistories.map { it.personIdx }.toMutableSet()
 
     eatHistories.forEach { eatHistory ->
         if (!hurtPeople.contains(eatHistory.personIdx)) {
