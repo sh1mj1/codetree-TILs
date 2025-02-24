@@ -1,4 +1,5 @@
 import kotlin.math.max
+import kotlin.math.abs
 
 fun main() {
     val (bombsCount, validDistance) = readln().trim().split(" ").map(String::toInt)
@@ -6,29 +7,23 @@ fun main() {
         Bomb(idx, readln().toInt())
     }
 
-    var maxExplodedBomb = -1
 
-    for (bomb in bombs) {
-        val foundBombs = bombs.filter { it.name == bomb.name }
-            
-        var shouldExplode = false
-        for (i in 0 until foundBombs.size - 1) {
-            if (foundBombs[i + 1].idx - foundBombs[i].idx <= validDistance) {
-                shouldExplode = true
-            }
-
-            if (shouldExplode) {
-                maxExplodedBomb = max(maxExplodedBomb, foundBombs[0].name)
-                break
-            }
-        }
-    }
+    val maxExplodedBomb = bombs.filter { bomb ->
+        bombs
+            .filter { it.name == bomb.name }
+            .windowed(2)
+            .any { it[1].shouldExplode(it[0], validDistance) }
+    }.maxOfOrNull { it.name } ?: -1
 
     println(maxExplodedBomb)
+
 }
 
 
 data class Bomb(
     val idx: Int,
     val name: Int,
-)
+) {
+    fun shouldExplode(other: Bomb, validDistance: Int): Boolean =
+         abs(other.idx - idx) <= validDistance
+}
