@@ -2,27 +2,18 @@
 
 fun main() {
     val (matchCount, devCount) = readln().trim().split(" ").map(String::toInt)
-    val matchResults = List(matchCount) {
-        readln().trim().split(" ").map(String::toInt)
-    }
+    val matchResults = List(matchCount) { readln().trim().split(" ").map(String::toInt) }
 
-    var allDevPairCount = 0
 
-    for (i in 1 .. devCount) {
-        for (j in i + 1 .. devCount) {
-            val (highPriority, lowPriority) = if (matchResults[0].indexOf(i) > matchResults[0].indexOf(j)) {
-                Pair(j, i)
-            } else {
-                Pair(i, j)
-            }
+    val allDevPairCount = (1 .. devCount).sumOf { standardDev ->
+        (standardDev + 1 .. devCount).count { targetDev -> 
+            val (highPriority, lowPriority) = 
+                if (matchResults.first().let { result -> result.indexOf(standardDev) > result.indexOf(targetDev) } ) 
+                    targetDev to standardDev
+                else
+                    standardDev to targetDev
             
-            if (
-                matchResults.all { result ->
-                    result.indexOf(highPriority) < result.indexOf(lowPriority)
-                }
-            ) {
-                allDevPairCount++
-            }    
+            matchResults.all { result -> result.indexOf(highPriority) < result.indexOf(lowPriority) }
         }
     }
     println(allDevPairCount)
