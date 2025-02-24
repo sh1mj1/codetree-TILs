@@ -9,9 +9,8 @@ fun main() {
 }
 
 fun Int.isInteresting(): Boolean {
-    val digits = this.toString().map { it }
+    val digitCounts = this.toString().groupingBy { it }.eachCount()
 
-    return digits.toSet().size == 2 && 
-        digits.any { digit -> digits.count { it == digit } == digits.size - 1 
-    }
+    return digitCounts.size == 2 && digitCounts.values.contains(this.toString().length - 1)
+
 }
