@@ -12,7 +12,7 @@ fun main() {
         icebergs.foldIndexed(0) { i, count, iceberg -> 
             when {
                 iceberg <= seaLevel -> count
-                i == 0 || iceberg[i - 1] <= seaLevel -> count + 1
+                i == 0 || icebergs[i - 1] <= seaLevel -> count + 1
                 else -> count
             }
         }
