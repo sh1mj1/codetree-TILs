@@ -6,18 +6,16 @@ fun main() {
 
     val maxPoints = listOf<Int>(1, 2, 3).maxOf { startPos ->
         var stonePosition = startPos
-        var sum = 0
-        tries.forEach { thisTry ->
+
+        tries.count { thisTry ->
             when (stonePosition) {
                 thisTry.mix1 -> stonePosition = thisTry.mix2
                 thisTry.mix2 -> stonePosition = thisTry.mix1
                 else -> {}
             }
-            if (stonePosition == thisTry.choose) {
-                sum++
-            }
+
+            stonePosition == thisTry.choose
         }
-        sum
     }
 
     println(maxPoints)
