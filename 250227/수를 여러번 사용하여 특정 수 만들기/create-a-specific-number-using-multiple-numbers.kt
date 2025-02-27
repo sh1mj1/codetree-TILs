@@ -7,32 +7,35 @@ fun main() {
     var addBigCount = 0
     var sum = 0
     
-    while (sum < c) {
+    while (sum <= c) {
         addBigCount++
         sum += big
     }
-    sum -= big
-    addBigCount--
+    if (sum > c) {
+        sum -= big
+        addBigCount--
+    }
 
     sums.add(sum)
 
-    while (addBigCount >= 0) {
+    while (addBigCount > 0) {
         sum -= big
         addBigCount--
         
         var addSmallCount = 0
-        while (sum < c) {
+        while (sum <= c) {
             sum += small
             addSmallCount++
         }
-        sum -= small
-        addSmallCount--
-
+        if (sum > c) {
+            sum -= small
+            addSmallCount--
+        }
+        
         sums.add(sum)
 
         repeat(addSmallCount) {
             sum -= small
-            addSmallCount--
         }
     }
 
