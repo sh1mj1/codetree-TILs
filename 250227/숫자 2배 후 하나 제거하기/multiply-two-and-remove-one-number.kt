@@ -1,24 +1,47 @@
 import kotlin.math.abs
+import kotlin.math.min
 
 fun main() {
     val numberCount = readln().toInt()
-    val numbers = readln().trim().split(" ").map(String::toInt)
-    val idxRange = (0 until numberCount)
+    val numbers = readln().trim().split(" ").map(String::toInt).toIntArray()
+    val idxRange = 0 until numberCount
+    var minDiffSum = Int.MAX_VALUE
 
-    val minDiffSum = idxRange.minOf { idx ->
+    for (i in idxRange) {
+        numbers[i] *= 2
 
-        val multipliedNumbers = numbers.mapIndexed { multipliedIdx, number ->
-            if (multipliedIdx == idx) number * 2
-            else number
-        }
+        for (j in idxRange) {
+            var k = 0
+            var diffSum = 0
+            while (k < numberCount) { 
+                if (k == j) {
+                    k++
+                    continue
+                }
 
-        idxRange.minOf { removedIdx ->
-            val removedNumbers = multipliedNumbers.filterIndexed { idx, number -> idx != removedIdx }    
+                if (k -1 < 0) {
+                    k++
+                    continue
+                }
 
-            removedNumbers.windowed(2).sumOf {
-                abs(it[0] - it[1])
+                if (k -1 == j) {
+                    if (k - 2 < 0) {
+                        k++
+                        continue
+                    }
+                    val diff = abs(numbers[k] - numbers[k - 2])
+                    diffSum += diff
+                    k++
+                    continue
+                }
+
+                val diff = abs(numbers[k] - numbers[k - 1])
+                diffSum += diff
+                k++
             }
+            minDiffSum = min(minDiffSum, diffSum)
         }
+        numbers[i] /= 2
     }
 
     println(minDiffSum)
