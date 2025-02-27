@@ -1,52 +1,51 @@
+
+
 fun main() {
     val pointCount = readln().toInt()
     val points = List(pointCount) {
-        readln().trim().split(" ").map(String::toInt).let {
-            Point(it[0], it[1])
-        }
+        readln().trim().split(" ").map(String::toInt).let { (x, y) -> Point(x, y) }
     }
 
-    val directions = listOf('x', 'y')
-
-    if (canCoverIn3Lines(points, directions)) println(1)
-    else println(0)
-}
-
-fun canCoverIn3Lines(points: List<Point>, directions: List<Char>): Boolean {
-    for (p1 in points) {
-        for (dir1 in directions) {
-            val remain1 = points.filter(p1, dir1)
-            if (remain1.isEmpty()) return true
-
-            for (p2 in remain1) {
-                for (dir2 in directions) {
-                    val remain2 = remain1.filter(p2, dir2)
-                    if (remain2.isEmpty()) return true
-
-                    for (p3 in remain2) {
-                        for (dir3 in directions) {
-                            val remain3 = remain2.filter(p3, dir3)
-                            if (remain3.isEmpty()) return true
-                            continue
-                        }
-                    }
-                }
-            }
-        }
-    }
-    return false
-}
-
-private fun List<Point>.filter(target: Point, direction: Char): List<Point> {
-    return if (direction == 'x') {
-        this.filter { it.y != target.y}
+    if (
+        canCoverInLines(
+            points = points,
+            remainLineCount = 3,
+            directions = Direction.values().toList(),
+        )
+    ) {
+        println(1)
     } else {
-        this.filter { it.x != target.x}
+        println(0)
+    }
+    
+}
+
+fun canCoverInLines(points: List<Point>, remainLineCount: Int, directions: List<Direction>): Boolean {
+    if (points.isEmpty()) return true
+    if (remainLineCount == 0) return false
+
+    return points.any { point -> 
+        directions.any { direction -> 
+            val remain = points.filterNot { it.isAlignedWith(point, direction)}
+            canCoverInLines(remain, remainLineCount - 1, directions)
+        }
     }
 }
 
+
+enum class Direction {
+    X,
+    Y;
+
+    fun isAligned(point1: Point, point2: Point): Boolean = when(this) {
+        X -> point1.y == point2.y
+        Y -> point1.x == point2.x
+    }
+}
 
 data class Point(
-    val x: Int, 
+    val x: Int,
     val y: Int,
-)
+) {
+    fun isAlignedWith(other: Point, direction: Direction): Boolean = direction.isAligned(this, other)
+}
