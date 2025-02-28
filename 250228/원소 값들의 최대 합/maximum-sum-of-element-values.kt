@@ -1,5 +1,5 @@
 fun main() {
-    val (n, maxNum) = readLine()!!.split(" ").map { it.toInt() }
+    val (n, m) = readLine()!!.split(" ").map { it.toInt() }
     val numbers = readLine()!!.split(" ").map { it.toInt() }
 
     val maxNumber = numbers.maxOrNull() ?: m
