@@ -8,11 +8,11 @@ fun main() {
         var currentIndex = startIndex
         var sum = 0
 
-        repeat(m) {
+        for (step in 0 until m) {
+            if (currentIndex !in sequence.indices) break // 인덱스 벗어나는 경우 방지
+
             sum += sequence[currentIndex]
             currentIndex = sequence[currentIndex] - 1
-
-            if (currentIndex !in sequence.indices) break // 인덱스 벗어나는 경우 방지
         }
 
         maxSum = maxOf(maxSum, sum)
