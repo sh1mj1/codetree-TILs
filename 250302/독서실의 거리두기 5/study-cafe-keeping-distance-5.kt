@@ -17,6 +17,7 @@ fun main() {
         if (seats[i] == '0') {
             val minDistance = occupiedIndices.minOf { kotlin.math.abs(it - i) }
 
+            // 가장 가까운 사람과의 거리 중 최대값을 찾는다
             if (minDistance > maxMinDistance) {
                 maxMinDistance = minDistance
                 bestSeat = i
@@ -24,5 +25,19 @@ fun main() {
         }
     }
 
-    println(maxMinDistance)
+    seats[bestSeat] = '1'
+
+    var finalMinDistance = n
+    var prev = -1
+
+    for (i in seats.indices) {
+        if (seats[i] == '1') {
+            if (prev != -1) {
+                finalMinDistance = minOf(finalMinDistance, i - prev)
+            }
+            prev = i
+        }
+    }
+
+    println(finalMinDistance)
 }
