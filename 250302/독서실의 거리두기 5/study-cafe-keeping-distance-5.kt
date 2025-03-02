@@ -1,43 +1,24 @@
+import kotlin.math.abs
+
 fun main() {
     val n = readln().toInt()
-    val seats = readln().toCharArray()
+    val seats = readln().trim()
 
-    val occupiedIndices = seats.indices.filter { seats[it] == '1' }
+    val occupiedIndicesFirst = seats.indices.filter { seats[it] == '1' }
+    val vacantIndicesFirst = seats.indices.filter { seats[it] == '0' }
 
-    if (occupiedIndices.isEmpty()) {
-        println(n - 1)
-        return
+    val bestSeat = vacantIndicesFirst
+        .maxByOrNull { i -> occupiedIndicesFirst.minOf { abs(it - i) } }
+        ?: return
+
+    val updatedSeats = seats.mapIndexed { index, char ->
+        if (index == bestSeat) '1' else char
     }
 
-    var maxMinDistance = 0
-
-    var bestSeat = -1
-
-    for (i in seats.indices) {
-        if (seats[i] == '0') {
-            val minDistance = occupiedIndices.minOf { kotlin.math.abs(it - i) }
-
-            // 가장 가까운 사람과의 거리 중 최대값을 찾는다
-            if (minDistance > maxMinDistance) {
-                maxMinDistance = minDistance
-                bestSeat = i
-            }
-        }
-    }
-
-    seats[bestSeat] = '1'
-
-    var finalMinDistance = n
-    var prev = -1
-
-    for (i in seats.indices) {
-        if (seats[i] == '1') {
-            if (prev != -1) {
-                finalMinDistance = minOf(finalMinDistance, i - prev)
-            }
-            prev = i
-        }
-    }
+    val finalMinDistance = updatedSeats
+        .mapIndexedNotNull { index, c -> if (c == '1') index else null }
+        .zipWithNext { a, b -> b - a }
+        .minOrNull() ?: n
 
     println(finalMinDistance)
 }
