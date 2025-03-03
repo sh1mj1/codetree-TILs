@@ -2,27 +2,22 @@ fun main() {
     val n = readln().toInt()
     val ranges = List(n) { readln().split(" ").map { it.toInt() } }
 
-    var x = 1
-
-    while (true) {
-        var currentX = x
-        var valid = true
-
-        for ((a, b) in ranges) {
-            while (currentX < a) {
-                currentX *= 2
-            }
-            if (currentX > b) {
-                valid = false
-                break
+    fun isReal(index: Int): Boolean {
+        var now = index
+        for (i in 0 until n) {
+            now *= 2
+            val (a, b) = ranges[i]
+            if (now !in a..b) {
+                return false
             }
         }
+        return true
+    }
 
-        if (valid) {
-            println(x)
-            return
+    for (i in 1..(ranges[0][1] / 2)) {
+        if (isReal(i)) {
+            println(i)
+            break
         }
-
-        x++
     }
 }
