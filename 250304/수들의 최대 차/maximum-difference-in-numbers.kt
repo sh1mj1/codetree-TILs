@@ -8,7 +8,7 @@ fun main() {
 
     val maxCount = sortedNumbers.withIndex().maxOf { (i, minNum) ->
         val maxNumIdx = sortedNumbers.indexOfLast { maxNum -> maxNum - minNum <= k }
-            .takeIf { it >= 0 } ?: return@maxOf i - 1
+            .takeIf { it >= 0 } ?: return@maxOf 0
         maxNumIdx - i + 1
     }
 
