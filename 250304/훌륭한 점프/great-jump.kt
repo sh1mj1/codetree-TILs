@@ -10,13 +10,14 @@ fun main() {
         val min = stone.num
 
         if (stones[0].num > min) continue
+        if (stones.last().num > min) continue
 
         val possibleNext = stones.filter { it.num <= min }
 
         if (
             possibleNext
-                .windowed(2)
-                .all { it[1].pos - it[0].pos <= k }
+                .zipWithNext { a, b -> b.pos - a.pos }
+                .all { it <= k }
         ) {
             println(min)
             return
