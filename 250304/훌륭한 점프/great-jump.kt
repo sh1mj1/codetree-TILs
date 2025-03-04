@@ -1,32 +1,33 @@
+import java.util.*
+
 fun main() {
     val (n, k) = readln().trim().split(" ").map(String::toInt)
-    val stones = readln().trim().split(" ").map(String::toInt).mapIndexed { i, num ->
-        Stone(i, num)
-    }
+    val stones = readln().trim().split(" ").map(String::toInt)
 
-    val sortedStones = stones.sortedBy { it.num }
+    // BFS를 위한 큐
+    val queue: Queue<Pair<Int, Int>> = LinkedList()
+    queue.add(0 to stones[0]) // 시작 위치 (index, 해당 돌의 값)
 
-    for (stone in sortedStones) {
-        val min = stone.num
+    val visited = BooleanArray(n) { false }
+    visited[0] = true
 
-        if (stones[0].num > min) continue
-        if (stones.last().num > min) continue
+    var minMaxValue = stones[0] // 거쳐간 돌들의 값 중 최댓값의 최소값
 
-        val possibleNext = stones.filter { it.num <= min }
+    while (queue.isNotEmpty()) {
+        val (currentIndex, currentMax) = queue.poll()
+        minMaxValue = minOf(minMaxValue, currentMax)
 
-        if (
-            possibleNext
-                .zipWithNext { a, b -> b.pos - a.pos }
-                .all { it <= k }
-        ) {
-            println(min)
+        if (currentIndex == n - 1) {
+            println(minMaxValue)
             return
         }
-    }
-    
-}
 
-data class Stone(
-    val pos: Int,
-    val num: Int,
-)
+        for (nextIndex in currentIndex + 1 until n) {
+            if (nextIndex - currentIndex > k) break
+            if (!visited[nextIndex]) {
+                visited[nextIndex] = true
+                queue.add(nextIndex to maxOf(currentMax, stones[nextIndex]))
+            }
+        }
+    }
+}
