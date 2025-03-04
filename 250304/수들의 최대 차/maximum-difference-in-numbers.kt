@@ -7,14 +7,9 @@ fun main() {
     val sortedNumbers = numbers.sorted()
 
     val maxCount = sortedNumbers.withIndex().maxOf { (i, minNum) ->
-        (n - 1 downTo i).maxOf { j ->
-            val maxNum = sortedNumbers[j]
-            if (maxNum - minNum <= k) {
-                j - i + 1 // count
-            } else {
-                0
-            }
-        }
+        val maxNumIdx = sortedNumbers.indexOfLast { maxNum -> maxNum - minNum <= k }
+            .takeIf { it >= 0 } ?: return@maxOf i - 1
+        maxNumIdx - i + 1
     }
 
     println(maxCount)
