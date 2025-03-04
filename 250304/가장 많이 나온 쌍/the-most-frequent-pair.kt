@@ -1,26 +1,32 @@
 fun main() {
     val (n, m) = readln().trim().split(" ").map(String::toInt)
 
-    val numberPairs = List(m) {
+    val numbersSet = List(m) {
         readln().trim().split(" ").map(String::toInt).let {
-            NumberPair(it[0], it[1])
+            Numbers(setOf(it[0], it[1]))
         }
     }
 
-    val maxCount = numberPairs.maxOf { pair ->
-        numberPairs.count { it.equal(pair) }
+    val numbersCounts = mutableMapOf<Numbers, Int>()
+
+    for (numbers in numbersSet) {
+        if (numbersCounts[numbers] == null) {
+            numbersCounts[numbers] = 1
+            continue
+        }
+        numbersCounts[numbers] = numbersCounts[numbers]!! + 1
+    }
+
+    val maxCount = numbersSet.maxOf { pair ->
+        numbersSet.count { it.values == pair.values }
     }
 
     println(maxCount)
 }
 
-data class NumberPair(
-    val a: Int,
-    val b: Int,
+data class Numbers(
+    private val _values: Set<Int>
 ) {
-    fun equal(other: NumberPair): Boolean {
-        if (this == other) return true
-        if (a == other.b && b == other.a) return true
-        return false
-    }
+    val values = _values.sorted()
 }
+
