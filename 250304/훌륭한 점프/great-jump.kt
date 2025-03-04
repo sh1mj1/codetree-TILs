@@ -9,7 +9,9 @@ fun main() {
     for (stone in sortedStones) {
         val min = stone.num
 
-        val possibleNext = stones.filter { it.pos == 0 || it.num <= min }
+        if (stones[0].num > min) continue
+
+        val possibleNext = stones.filter { it.num <= min }
 
         if (
             possibleNext
@@ -19,10 +21,8 @@ fun main() {
             println(min)
             return
         }
-        
     }
     
-
 }
 
 data class Stone(
