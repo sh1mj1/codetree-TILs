@@ -8,20 +8,10 @@ fun main() {
     }
 
     val numbersCounts = mutableMapOf<Numbers, Int>()
-
-    for (numbers in numbersSet) {
-        if (numbersCounts[numbers] == null) {
-            numbersCounts[numbers] = 1
-            continue
-        }
-        numbersCounts[numbers] = numbersCounts[numbers]!! + 1
+    numbersSet.forEach {
+        numbersCounts[it] = numbersCounts.getOrDefault(it, 0) + 1
     }
-
-    val maxCount = numbersSet.maxOf { pair ->
-        numbersSet.count { it.values == pair.values }
-    }
-
-    println(maxCount)
+    println(numbersCounts.values.maxOf { it } )
 }
 
 data class Numbers(
@@ -29,4 +19,3 @@ data class Numbers(
 ) {
     val values = _values.sorted()
 }
-
