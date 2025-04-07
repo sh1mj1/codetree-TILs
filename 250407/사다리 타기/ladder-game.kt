@@ -5,7 +5,7 @@ class LadderGame(
     private val horizontalCount: Int,
     lines: List<Line>
 ) {
-    private val connections: List<MutableList<Int>> = List(verticalCount) { mutableListOf() }
+    private val connections: List<MutableList<Int>> = List(16) { mutableListOf() }    
     private val originalOrder: List<Int>
 
     init {
