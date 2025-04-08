@@ -45,7 +45,7 @@ class LadderGame(
     val allRowsCount = allRows.size
     val originalPlayResult: List<Int> = playResult(rows = allRows)
 
-    var minRowsCount = Int.MAX_VALUE
+    var minRowsCount = allRowsCount
 
     fun playResult(rows: List<Row>) : List<Int>{
         val result = MutableList(playersCount) {idx -> idx}
