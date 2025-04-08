@@ -88,19 +88,3 @@ class LadderGame(
         }
     }
 }
-
-/*
-allRows : [
-0    Row(col1=0, col2=1, height=1), 
-1    Row(col1=1, col2=2, height=2), 
-2    Row(col1=2, col2=3, height=3), 
-3    Row(col1=2, col2=3, height=4), 
-4    Row(col1=1, col2=2, height=5), 
-5    Row(col1=0, col2=1, height=6)
-]
-
-
-
-
-
-*/
