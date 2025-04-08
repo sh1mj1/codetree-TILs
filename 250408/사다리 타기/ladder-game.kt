@@ -67,11 +67,10 @@ class LadderGame(
         removedRows: List<Row>,
     ) {
         if (depth == allRowsCount) {
-            val playResult = playResult(
-                rows = allRows - removedRows,
-            )
+            val remainingRows = allRows - removedRows
+            val playResult = playResult(rows = remainingRows)
             if (playResult == originalPlayResult) {
-                minRowsCount = min(minRowsCount, allRowsCount - removedRows.size)
+                minRowsCount = min(minRowsCount, remainingRows.size)
             }
 
             return
@@ -85,7 +84,7 @@ class LadderGame(
 
             play(
                 depth = depth + 1,
-                removedRows = removedRows + listOf(allRows[i])
+                removedRows = removedRows + allRows[i]
             )
         }
     }
