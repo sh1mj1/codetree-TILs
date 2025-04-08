@@ -51,7 +51,6 @@ class LadderGame(
         val result = MutableList(playersCount) {idx -> idx}
 
         rows
-            .sortedBy { it.height }
             .forEach { row ->
                 val (col1, col2, height) = row
                 val temp = result[col1]
