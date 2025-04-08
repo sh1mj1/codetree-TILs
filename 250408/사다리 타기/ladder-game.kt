@@ -47,6 +47,9 @@ class LadderGame(
 
     var minRowsCount = allRowsCount
 
+    val visited = mutableSetOf<String>()
+
+
     fun playResult(rows: List<Row>) : List<Int>{
         val result = MutableList(playersCount) {idx -> idx}
 
@@ -65,6 +68,10 @@ class LadderGame(
         depth: Int,
         removedRows: List<Row>,
     ) {
+        val state = removedRows.joinToString(",")
+        if (state in visited) return
+        visited.add(state)
+
         if (depth == allRowsCount) {
             val remainingRows = allRows - removedRows
             val playResult = playResult(rows = remainingRows)
