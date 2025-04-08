@@ -77,12 +77,12 @@ class LadderGame(
 
         for (i in depth until allRowsCount) {
             play(
-                depth = depth + 1,
+                depth = i + 1,
                 removedRows = removedRows,
             )
 
             play(
-                depth = depth + 1,
+                depth = i + 1,
                 removedRows = removedRows + allRows[i]
             )
         }
