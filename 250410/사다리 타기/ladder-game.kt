@@ -38,39 +38,40 @@ fun main() {
         return initialPlayResult == playResult
     }
 
-    fun search(selectedRows: List<Row>, startIdx: Int, countGoal: Int): Int? {
+    fun firstValidCombination(
+        selectedRows: List<Row>,
+        startIdx: Int,
+        countGoal: Int,
+    ): List<Row> {
         if (selectedRows.size == countGoal) {
-            if (isValid(selectedRows)) {
-                return countGoal
-            } else {
-                return null
-            }
+            if (isValid(selectedRows)) return selectedRows
+            return emptyList()
         }
 
         for (idx in startIdx until m) {
-            val searched =  search(
-                selectedRows = selectedRows + initialRows[idx],
+            val newSelectedRows = selectedRows + initialRows[idx]
+            val combination = firstValidCombination(
+                selectedRows = newSelectedRows,
                 startIdx = idx + 1,
                 countGoal = countGoal,
             )
-            if (searched == null) continue
-            else return searched
+            if (combination.isEmpty()) continue
+            return combination
         }
-        return null
+        return emptyList()
     }
 
-    for (selectedCount in 1 .. m) {
-        val searched = search(
-            selectedRows = emptyList(),
-            startIdx = 0,
-            countGoal = selectedCount
+    for (selectedCount in 1 until m) {
+        val combination = firstValidCombination(
+            emptyList(),
+            0,
+            selectedCount,
         )
-        if(searched != null) {
-            println(searched)
+        if (combination.isNotEmpty()) {
+            println(combination.size)
             return
         }
     }
-
     println(m)
 }
 
