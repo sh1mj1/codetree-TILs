@@ -2,7 +2,7 @@ import kotlin.math.max
 
 fun main() {
     val (n, m, c) = readln().split(" ").map { it.toInt() }
-    val weight = Array(n) { readln().split(" ").map { it.toInt() } }
+    val weight = Array(n) { readln().trim().split(" ").map { it.toInt() } }
     // Please write your code here.
     var totalMaxPriceSum = 0
 
