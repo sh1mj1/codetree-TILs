@@ -21,7 +21,7 @@ fun main() {
             val priceSum = cComb.sumOf { it * it }
             totalMaxPriceSum = max(totalMaxPriceSum, thief1Sum + priceSum)
 
-            thief2(
+            return thief2(
                 startIdx = idx + 1,
                 currentCombination = cComb,
                 cWeight = cWeight,
@@ -63,7 +63,7 @@ fun main() {
                     }
                 }
             }
-            thief1(
+            return thief1(
                 startIdx = idx + 1,
                 row = row,
                 currentCombination = cComb,
