@@ -1,6 +1,3 @@
-package poke.rogue.helper.presentation.dex.detail
-
-
 import kotlin.math.max
 
 fun main() {
@@ -24,7 +21,7 @@ fun main() {
             val priceSum = cComb.sumOf { it * it }
             totalMaxPriceSum = max(totalMaxPriceSum, thief1Sum + priceSum)
 
-            return thief2(
+            thief2(
                 startIdx = idx + 1,
                 currentCombination = cComb,
                 cWeight = cWeight,
@@ -66,7 +63,7 @@ fun main() {
                     }
                 }
             }
-            return thief1(
+            thief1(
                 startIdx = idx + 1,
                 row = row,
                 currentCombination = cComb,
