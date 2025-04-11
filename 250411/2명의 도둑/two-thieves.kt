@@ -1,87 +1,59 @@
-import kotlin.math.max
+import java.util.*
 
 fun main() {
-    val (n, m, c) = readln().split(" ").map { it.toInt() }
-    val weight = Array(n) { readln().trim().split(" ").map { it.toInt() } }
-    // Please write your code here.
-    var totalMaxPriceSum = 0
+    val scanner = Scanner(System.`in`)
+    val n = scanner.nextInt()
+    val m = scanner.nextInt()
+    val c = scanner.nextInt()
 
-    fun thief2(
-        startIdx: Int,
-        currentCombination: List<Int>,
-        cWeight: List<Int>,
-        thief1Sum: Int,
-    ) {
-        for (idx in startIdx until n) {
-            val cComb = currentCombination + cWeight[idx]
-
-            val currentWeightSum =  cComb.sumOf { it }
-            if (currentWeightSum > c) return
-
-            val priceSum = cComb.sumOf { it * it }
-            totalMaxPriceSum = max(totalMaxPriceSum, thief1Sum + priceSum)
-
-            return thief2(
-                startIdx = idx + 1,
-                currentCombination = cComb,
-                cWeight = cWeight,
-                thief1Sum = thief1Sum,
-            )
+    val grid = Array(n) { IntArray(n) }
+    for (i in 0 until n) {
+        for (j in 0 until n) {
+            grid[i][j] = scanner.nextInt()
         }
     }
 
-    fun thief1(
-        startIdx: Int,
-        row: Int,
-        currentCombination: List<Int>,
-    ) {
-        for (idx in startIdx until n) {
-            var cComb = currentCombination + weight[row][idx]
-            val currentWeightSum = cComb.sumOf { it }
-            if (currentWeightSum > c) return
+    var answer = 0
+    fun calculateMaxSum(index: Int): Int {
+        val row = index / n
+        val col = index % n
+        val arr = IntArray(m) { grid[row][col + it] }
 
-            val priceSum = cComb.sumOf { it * it }
-            
-            for (thief2Row in 0 until n) {
-                if (thief2Row == row) {
-                    for (startIdx in idx + 1 until n) {
-                        thief2(
-                            startIdx = startIdx,
-                            currentCombination = emptyList(),
-                            cWeight = weight[thief2Row],
-                            thief1Sum = priceSum,
-                        )
-                    }
-                } else {
-                    for (startIdx in 0 until n) {
-                        thief2(
-                            startIdx = startIdx,
-                            currentCombination = emptyList(),
-                            cWeight = weight[thief2Row],
-                            thief1Sum = priceSum,
-                        )
-                    }
+        var max = 0
+        for (bit in 0 until (1 shl m)) {
+            val subset = mutableListOf<Int>()
+            for (i in 0 until m) { 
+                if (bit and (1 shl i) != 0) {
+                    subset.add(arr[i])
                 }
             }
-            return thief1(
-                startIdx = idx + 1,
-                row = row,
-                currentCombination = cComb,
-            )
+            var sum = 0
+            var value = 0
+            for (num in subset) {
+                sum += num
+                value += num * num
+            }
+            if (sum <= c) {
+                max = max.coerceAtLeast(value)
+            }
+        }
+        return max
+    }
+
+    fun combination(count: Int, start: Int, selected: IntArray) {
+        if (count == 2) {
+            val sum = calculateMaxSum(selected[0]) + calculateMaxSum(selected[1])
+            answer = maxOf(answer, sum)
+            return
+        }
+
+        for (i in start until n * n) {
+            if (i % n + m > n) continue
+            selected[count] = i
+            combination(count + 1, i + m, selected)
         }
     }
 
-    for (row in 0 until n) {
-        for (sIdx in 0 until n) {
-            thief1(
-                startIdx = sIdx,
-                row = row,
-                currentCombination = emptyList(),
-            )
-        }
-    }
-
-    println(
-        totalMaxPriceSum
-    )
+    combination(0, 0, IntArray(2))
+    println(answer)
 }
