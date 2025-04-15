@@ -6,15 +6,20 @@ fun main() {
 
     val letterRange = 'a' .. 'f' 
     val numberRange = 1 .. 4
-    val letterCount = expression.count {
-        it in letterRange
+
+    val letters = expression.filter { it in letterRange}
+    val distinctLetters = letters.toSet()
+    val letterCount = distinctLetters.size
+    
+    val operators = expression.filter { it !in letterRange }
+
+    val lettersMap = mutableMapOf<Char, Int>()
+    for (letter in distinctLetters) {
+        lettersMap.put(letter, 0)
     }
 
-    val operators = expression.filter {
-        it !in letterRange
-    }
+    val lettersKey = lettersMap.keys.toList()
 
-    val letters = IntArray(letterCount) { 0 }
     var answer = Int.MIN_VALUE
 
     fun calculate(operand1: Int, operand2: Int, operator: Char): Int {
@@ -43,17 +48,24 @@ fun main() {
         return operand1
     }
 
-    fun findMax(depth: Int, curNumbers: List<Int>) {
+
+    fun findMax(depth: Int, curLetters: Map<Char, Int>) {
         if (depth >= letterCount) {
-            answer = max(answer, calculate(curNumbers))
+            val numbers = mutableListOf<Int>()
+            for(l in letters) {
+                numbers.add(curLetters[l]!!)
+            }
+            answer = max(answer, calculate(numbers))
             return
         }
 
         for (number in numberRange) {
-            findMax(depth + 1, curNumbers + number)
+            findMax(depth + 1, curLetters + (lettersKey[depth] to number))
+            // println(lettersKey[depth])
         }
     }
 
-    findMax(0, emptyList())
+    findMax(0, emptyMap())
     println(answer)
+
 }
