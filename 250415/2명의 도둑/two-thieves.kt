@@ -23,13 +23,16 @@ fun main() {
     var totalMax = 0
     
     fun findMax(depth: Int, curWeights: List<Int>, weights: List<Int>){
+        // println(
+        //     "depth: $depth curWeights: $curWeights weights: $weights"
+        // )
         if (curWeights.sum() > c) return
         
         val priceSum = curWeights.sumOf { it * it }
         curMax = max(curMax, priceSum)
         
         for (idx in depth until m) {
-            findMax(depth + 1, curWeights + weights[idx], weights)
+            findMax(idx + 1, curWeights + weights[idx], weights)
         }
     }
     
