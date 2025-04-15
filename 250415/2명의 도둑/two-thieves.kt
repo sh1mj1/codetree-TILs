@@ -2,7 +2,7 @@ import kotlin.math.max
 
 fun main() {
     val (n, m, c) = readln().split(" ").map { it.toInt() }
-    val weight = Array(n) { readln().split(" ").map { it.toInt() } }
+    val weight = Array(n) { readln().trim().split(" ").map { it.toInt() } }
     // Please write your code here.
     fun possible(r1: Int, c1: Int, r2: Int, c2: Int): Boolean {
         val lastC1 = c1 + m - 1
