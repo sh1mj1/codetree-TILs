@@ -6,124 +6,65 @@ fun main() {
     val moveDir = Array(gridSize) { readLine()!!.trim().split(" ").map { it.toInt() } }
     val (startRow, startCol) = readLine()!!.trim().split(" ").map { it.toInt() - 1 }
     // Please write your code here.
-    var maxMoveCount = 0
-    data class Position(
-        val row: Int,
-        val col: Int,
-    )
-
-    // val directions = mapOf(
-    //     1 to 
-    // )
 
     val gridRange = 0 until gridSize
 
-    fun inRange(r: Int, c: Int): Boolean = (r in gridRange) && (c in gridRange)
-
-    fun movableDestinations(direction: Int, r: Int, c: Int): List<Position> {
-        val curNum = num[r][c]
-        var curRow = r
-        var curCol = c
-        val next = mutableListOf<Position>()
-
-        when(direction) {
-            // up
-            1 -> {
-                while (inRange(--curRow, curCol)) {
-                    if (curNum < num[curRow][curCol]) {
-                        next.add(Position(curRow, curCol))
-                    }
-                }
-            }
-            // rightup
-            2 -> {
-                while (inRange(--curRow, ++curCol)) {
-                    if (curNum < num[curRow][curCol]) {
-                        next.add(Position(curRow, curCol))
-                    }
-                }
-            }
-            // right
-            3 -> {
-                while (inRange(curRow, ++curCol)) {
-                    if (curNum < num[curRow][curCol]) {
-                        next.add(Position(curRow, curCol))
-                    }
-                }
-            }
-            // rightdown
-            4 -> {
-                while (inRange(++curRow, ++curCol)) {
-                    if (curNum < num[curRow][curCol]) {
-                        next.add(Position(curRow, curCol))
-                    }
-                }
-            }
-            // down
-            5 -> {
-                while (inRange(++curRow, curCol)){
-                    if (curNum < num[curRow][curCol]) {
-                        next.add(Position(curRow, curCol))
-                    }
-                }
-            }
-            // left down
-            6 -> {
-                while (inRange(++curRow, --curCol)){
-                    if (curNum < num[curRow][curCol]) {
-                        next.add(Position(curRow, curCol))
-                    }
-                }
-            }
-            // left
-            7 -> {
-                while (inRange(curRow, --curCol)){
-                    if (curNum < num[curRow][curCol]) {
-                        next.add(Position(curRow, curCol))
-                    }
-                }
-            }
-            // leftUp: 
-            8 -> {
-                while (inRange(--curRow, --curCol)){
-                    if (curNum < num[curRow][curCol]) {
-                        next.add(Position(curRow, curCol))
-                    }
-                }
-            }
-        }
-        return next
-    }
-
-    fun move(
-        moveCount: Int,
-        r: Int,
-        c: Int,
+    data class Position(
+        val row: Int,
+        val col: Int,
     ) {
-        val destinations = movableDestinations(
-            direction = moveDir[r][c],
-            r = r,
-            c = c,
-        )
-        if (destinations.isEmpty()) {
-            maxMoveCount = max(maxMoveCount, moveCount)
-            return 
-        }
+        val isInRange: Boolean = (row in gridRange) && (col in gridRange)
 
-        for (destination in destinations) {
-            move(
-                moveCount = moveCount + 1,
-                r = destination.row,
-                c = destination.col,
+        fun movedWith(pos: Position): Position {
+            return Position(
+                row = row + pos.row,
+                col = col + pos.col
             )
         }
+
+        fun num(): Int = num[row][col]
     }
 
-    move(
-        moveCount = 0,
-        r = startRow,
-        c = startCol,
+    val directions = mapOf(
+        1 to Position(-1, 0),
+        2 to Position(-1, 1),
+        3 to Position(0, 1),
+        4 to Position(1, 1),
+        5 to Position(1, 0),
+        6 to Position(1, -1),
+        7 to Position(0, -1),
+        8 to Position(-1, -1),
     )
 
-    println(maxMoveCount)
+    fun movableDestinations(direction: Position, position: Position): List<Position> {
+        val curNum = position.num()
+        val destinations = mutableListOf<Position>()
+
+        var nextPosition = position.movedWith(direction)
+        while (nextPosition.isInRange) {
+            if (curNum < nextPosition.num()) {
+                destinations.add(nextPosition)
+            }
+            nextPosition = nextPosition.movedWith(direction)
+        }
+
+        return destinations
+    }
+
+    fun moveCount(
+        r: Int,
+        c: Int,
+    ): Int {
+        val destinations = movableDestinations(
+            direction = directions[moveDir[r][c]] ?: error(" "),
+            Position(r, c)
+        )
+        if (destinations.isEmpty()) return 0
+
+        return destinations.maxOf { dest ->
+            1 + moveCount(dest.row, dest.col)
+        }
+    }
+
+    println(moveCount(startRow, startCol))
 }
