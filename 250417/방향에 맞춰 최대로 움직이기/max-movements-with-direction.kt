@@ -38,17 +38,11 @@ fun main() {
 
     fun movableDestinations(direction: Position, position: Position): List<Position> {
         val curNum = position.num()
-        val destinations = mutableListOf<Position>()
 
-        var nextPosition = position.movedWith(direction)
-        while (nextPosition.isInRange) {
-            if (curNum < nextPosition.num()) {
-                destinations.add(nextPosition)
-            }
-            nextPosition = nextPosition.movedWith(direction)
-        }
-
-        return destinations
+        return generateSequence(position.movedWith(direction)) { it.movedWith(direction) }
+            .takeWhile { it.isInRange }
+            .filter { it.num() > curNum }
+            .toList()
     }
 
     fun moveCount(
