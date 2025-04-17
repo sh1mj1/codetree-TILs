@@ -2,9 +2,9 @@ import kotlin.math.max
 
 fun main() {
     val n = readLine()!!.toInt()
-    val num = Array(n) { readLine()!!.split(" ").map { it.toInt() } }
-    val moveDir = Array(n) { readLine()!!.split(" ").map { it.toInt() } }
-    val (startRow, startCol) = readLine()!!.split(" ").map { it.toInt() - 1 }
+    val num = Array(n) { readLine()!!.trim().split(" ").map { it.toInt() } }
+    val moveDir = Array(n) { readLine()!!.trim().split(" ").map { it.toInt() } }
+    val (startRow, startCol) = readLine()!!.trim().split(" ").map { it.toInt() - 1 }
     // Please write your code here.
     var maxMoveCount = 0
     data class Position(
