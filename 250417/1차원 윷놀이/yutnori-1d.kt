@@ -1,8 +1,8 @@
 import kotlin.math.max
 
 fun main() {
-    val (turnCount, boardSize, chipSize) = readln().split(" ").map { it.toInt() }
-    val moves = readln().split(" ").map { it.toInt() }
+    val (turnCount, boardSize, chipSize) = readln().trim().split(" ").map { it.toInt() }
+    val moves = readln().trim().split(" ").map { it.toInt() }
     
     // Please write your code here.
     var maxPoint = 0
