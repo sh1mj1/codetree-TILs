@@ -12,9 +12,9 @@ fun main() {
         val col: Int,
     )
 
-    val directions = mapOf(
-        1 to 
-    )
+    // val directions = mapOf(
+    //     1 to 
+    // )
 
     val gridRange = 0 until gridSize
 
