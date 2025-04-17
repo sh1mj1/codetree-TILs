@@ -5,12 +5,10 @@ fun main() {
     val moves = readln().trim().split(" ").map { it.toInt() }
     
     // Please write your code here.
+    val positions = MutableList(chipSize) { 0 }
     var maxPoint = 0
 
-    fun move(
-        moveIdx: Int,
-        positions: List<Int>,
-    ) {
+    fun move(moveIdx: Int) {
         if (moveIdx >= turnCount) {
             val point = positions.count { it >= boardSize - 1 }
             maxPoint = max(maxPoint, point)
@@ -18,18 +16,19 @@ fun main() {
         }
 
         for (chip in 0 until chipSize) {
-            var nextPosition = positions[chip] + moves[moveIdx]
-            if (nextPosition >= boardSize) {
-                nextPosition = boardSize - 1
+            val currPosition = positions[chip]
+            val nextPosition = if (positions[chip] + moves[moveIdx] >= boardSize) {
+                boardSize - 1
+            } else {
+                positions[chip] + moves[moveIdx]
             }
-
-            val currPositions = positions.toMutableList()
-            currPositions[chip] = nextPosition
-            move(moveIdx + 1, currPositions)
+            positions[chip] = nextPosition
+            move(moveIdx + 1)
+            positions[chip] = currPosition
         }
     }
 
-    move(0, List(chipSize) { 0 })
+    move(0)
 
     println(maxPoint)
 }
