@@ -17,12 +17,13 @@ fun main() {
             return
         }
 
-        for (chip in 0 until chipSize - 1) {
-            val currPositions = positions.toMutableList()
+        for (chip in 0 until chipSize) {
             var nextPosition = positions[chip] + moves[moveIdx]
             if (nextPosition >= boardSize) {
                 nextPosition = boardSize - 1
             }
+
+            val currPositions = positions.toMutableList()
             currPositions[chip] = nextPosition
             move(moveIdx + 1, currPositions)
         }
