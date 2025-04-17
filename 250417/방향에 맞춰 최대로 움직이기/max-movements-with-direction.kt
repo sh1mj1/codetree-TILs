@@ -1,9 +1,9 @@
 import kotlin.math.max
 
 fun main() {
-    val n = readLine()!!.toInt()
-    val num = Array(n) { readLine()!!.trim().split(" ").map { it.toInt() } }
-    val moveDir = Array(n) { readLine()!!.trim().split(" ").map { it.toInt() } }
+    val gridSize = readLine()!!.toInt()
+    val num = Array(gridSize) { readLine()!!.trim().split(" ").map { it.toInt() } }
+    val moveDir = Array(gridSize) { readLine()!!.trim().split(" ").map { it.toInt() } }
     val (startRow, startCol) = readLine()!!.trim().split(" ").map { it.toInt() - 1 }
     // Please write your code here.
     var maxMoveCount = 0
@@ -12,7 +12,9 @@ fun main() {
         val col: Int,
     )
 
-    fun inRange(r: Int, c: Int): Boolean = (r in 0 until n) && (c in 0 until n)
+    val gridRange = 0 until n - 1
+
+    fun inRange(r: Int, c: Int): Boolean = (r in gridRange) && (c in gridRange)
 
     fun movableDestinations(direction: Int, r: Int, c: Int): List<Position> {
         val curNum = num[r][c]
