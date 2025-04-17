@@ -12,7 +12,11 @@ fun main() {
         val col: Int,
     )
 
-    val gridRange = 0 until n - 1
+    val directions = mapOf(
+        1 to 
+    )
+
+    val gridRange = 0 until gridSize
 
     fun inRange(r: Int, c: Int): Boolean = (r in gridRange) && (c in gridRange)
 
