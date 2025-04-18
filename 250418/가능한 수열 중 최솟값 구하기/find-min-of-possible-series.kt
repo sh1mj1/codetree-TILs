@@ -2,35 +2,28 @@ fun main() {
     val totalLength = readLine()!!.toInt()
     val searchRange = 4..6
 
+    fun isValid(numbers: List<Int>): Boolean {
+        val size = numbers.size
+        return (0 until size / 2).none { i ->
+            val compared1 = numbers.subList(size - 1 - i, size)
+            val compared2 = numbers.subList(size - 1 - (2 * i + 1) , size - i - 1)
+            compared1 == compared2
+        }
+    }
 
     fun seq(numbers: List<Int>): List<Int> {
-        val size = numbers.size
+        if (numbers.size >= totalLength) return numbers
 
-        if (size >= totalLength) {
-            return numbers
-        }
-
-        outer@ for(nextNum in searchRange) {
-            val nextNumbers = numbers + nextNum
-            val nextSize = nextNumbers.size
-
-            for (i in 0 until nextSize / 2) {
-                val compared1 = nextNumbers.subList(nextSize - 1 - i, nextSize)
-                val compared2 = nextNumbers.subList(nextSize - 1 - (2 * i + 1) , nextSize - i - 1)
-
-                if (compared1 == compared2) {
-                    continue@outer
-                }
+        return searchRange 
+            .map { nextNumber -> numbers + nextNumber}
+            .filter { nextNumbers -> isValid(nextNumbers) }
+            .firstNotNullOfOrNull {curNumbers -> 
+                seq(curNumbers)
+                    .takeIf { result -> result.isNotEmpty() }
             }
-            val result = seq(nextNumbers)
-            if (result.isNotEmpty()) {
-                return result
-            }
-        }
-        return emptyList()
+            ?: emptyList()
     }
 
     seq(listOf(4)).joinToString("")
         .also(::println)
-
 }
