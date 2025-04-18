@@ -1,34 +1,36 @@
 fun main() {
     val totalLength = readLine()!!.toInt()
-    // Please write your code here.
-    val searchRange = 4 .. 6
+    val searchRange = 4..6
 
-    fun seq(length: Int, numbers: List<Int>) {
-        outer@ for (nextNumber in searchRange) {
-            val nextNumbers = numbers + nextNumber
-            val i = nextNumbers.size - 1
 
-            if (nextNumbers.size > totalLength) {
-                println(numbers.joinToString(""))
-                return error("donw")
-            }
+    fun seq(numbers: List<Int>): List<Int> {
+        val size = numbers.size
 
-            for (k in 0 until (nextNumbers.size / 2)) {
-                val compared1 = nextNumbers.subList(i - k, i + 1)
-                val compared2 = nextNumbers.subList(i - (2 * k + 1), i - k)
+        if (size >= totalLength) {
+            return numbers
+        }
+
+        outer@ for(nextNum in searchRange) {
+            val nextNumbers = numbers + nextNum
+            val nextSize = nextNumbers.size
+
+            for (i in 0 until nextSize / 2) {
+                val compared1 = nextNumbers.subList(nextSize - 1 - i, nextSize)
+                val compared2 = nextNumbers.subList(nextSize - 1 - (2 * i + 1) , nextSize - i - 1)
+
                 if (compared1 == compared2) {
                     continue@outer
                 }
             }
-
-            seq(length + 1, nextNumbers)
+            val result = seq(nextNumbers)
+            if (result.isNotEmpty()) {
+                return result
+            }
         }
-        return
+        return emptyList()
     }
-    try {
-        seq(1, listOf(4))
-    } catch(e: Exception) {
-        
-    }
-    
+
+    seq(listOf(4)).joinToString("")
+        .also(::println)
+
 }
