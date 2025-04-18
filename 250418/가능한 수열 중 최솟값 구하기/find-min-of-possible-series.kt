@@ -3,17 +3,14 @@ fun main() {
     // Please write your code here.
     val searchRange = 4 .. 6
 
-    fun seq(length: Int, numbers: List<Int>): List<Int> {
-        if (length > totalLength) {
-            return numbers.subList(0, numbers.size - 1)
-        }
-
+    fun seq(length: Int, numbers: List<Int>) {
         outer@ for (nextNumber in searchRange) {
             val nextNumbers = numbers + nextNumber
             val i = nextNumbers.size - 1
 
             if (nextNumbers.size > totalLength) {
-                return numbers
+                println(numbers.joinToString(""))
+                return error("donw")
             }
 
             for (k in 0 until (nextNumbers.size / 2)) {
@@ -23,12 +20,15 @@ fun main() {
                     continue@outer
                 }
             }
-            return seq(length + 1, nextNumbers)
-        }
-        return emptyList()
-    }
 
-    val answerList = seq(1, listOf(4))
+            seq(length + 1, nextNumbers)
+        }
+        return
+    }
+    try {
+        seq(1, listOf(4))
+    } catch(e: Exception) {
+        
+    }
     
-    println(answerList.joinToString(""))
 }
