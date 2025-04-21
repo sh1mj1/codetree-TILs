@@ -11,9 +11,9 @@ fun main() {
             }
         }
     return helper(1, m)
-}
+    }
 
-    combinations.forEach {
+    combinations(n, m).forEach {
         println(it.joinToString(" "))
     }
 }
