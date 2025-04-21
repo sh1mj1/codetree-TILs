@@ -2,7 +2,7 @@ import kotlin.math.min
 
 fun main() {
     val n = readLine()!!.toInt()
-    val nums = readln().split(" ").map { it.toInt() }
+    val nums = readln().trim().split(" ").map { it.toInt() }
     // Please write your code here.
     var minJumpCount = Int.MAX_VALUE
 
