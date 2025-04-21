@@ -4,25 +4,20 @@ fun main() {
     val n = readLine()!!.toInt()
     val nums = readln().trim().split(" ").map { it.toInt() }
     // Please write your code here.
-    var minJumpCount = Int.MAX_VALUE
 
-    fun jumpCount(count: Int, position: Int) {
-        if (position >= n) return
-        if (position == n - 1) {
-            minJumpCount = min(minJumpCount, count)
+    fun jumpCount(count: Int, pos: Int): Int {
+        if (pos >= n) return Int.MAX_VALUE
+        if (pos == n - 1)  {
+            return count
         }
 
-        for (i in 1 .. nums[position]) {
-            jumpCount(count + 1, position + i)
-        }
+        return (1 .. nums[pos]).minOfOrNull { jump ->
+            jumpCount(count + 1, pos + jump)
+        } ?: Int.MAX_VALUE
     }
 
-    jumpCount(0, 0)
-    minJumpCount = if (minJumpCount == Int.MAX_VALUE) {
-        -1
-    } else {
-        minJumpCount
-    }
-
-    println(minJumpCount)
+    println(
+        jumpCount(0, 0)
+            .takeIf{it != Int.MAX_VALUE} ?: -1
+    )
 }
