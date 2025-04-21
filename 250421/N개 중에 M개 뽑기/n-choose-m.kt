@@ -2,26 +2,28 @@ fun main() {
     val (n, m) = readLine()!!.split(" ").map { it.toInt() }
     // Please write your code here.
 
-    fun printAllCombinations(count: Int, num: Int, curCombination: List<Int>) {
-        if (count == m) {
-            curCombination.joinToString(" ").also(::println)
-            return
-        }
+    fun allCombinations(n: Int, m: Int): List<List<Int>> {
+        val allCombinations = mutableListOf<List<Int>>()
 
-        (num + 1 .. n).forEach { nextNum ->
-            printAllCombinations(
-                count = count + 1,
-                num = nextNum,
-                curCombination = curCombination + nextNum
-            )
+        fun combination(count: Int, num: Int, curCombi: List<Int>) {
+            if (count == m) {
+                allCombinations.add(curCombi)
+            }
+
+            (num + 1 .. n).forEach { 
+                combination(count + 1, it, curCombi + it)
+            }
         }
+        
+        combination(0, 0, emptyList())
+        return allCombinations
     }
 
-    printAllCombinations(
-        count = 0,
-        num = 0,
-        curCombination = emptyList()
-    )
 
-
+    allCombinations(n, m)
+        .filter { it.isNotEmpty() }
+        .forEach {
+            println(it.joinToString(" "))
+        }
+    
 }
