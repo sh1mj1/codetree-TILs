@@ -4,21 +4,14 @@ fun main() {
     // Please write your code here.
 
     fun combinations(n: Int, m: Int): List<List<Int>> {
-        val combinations: MutableList<List<Int>> = mutableListOf()
+        fun helper(idx: Int, remain: Int): List<List<Int>> {
+            if (remain == 0) return listOf(emptyList())
 
-        fun add(numIdx: Int, remain: Int, curCombi: List<Int>) {
-            if (remain == 0) {
-                combinations.add(curCombi)
-                return
-            }
-
-            (numIdx until n).forEach {
-                add(it + 1, remain - 1, curCombi + numbers[it])
+            return (idx until n).flatMap { i ->
+                helper(i + 1, remain - 1).map { it + numbers[i] }
             }
         }
-
-        add(0, m, emptyList())
-        return combinations
+        return helper(0, m)
     }
 
     val combinations = combinations(n, m)
@@ -31,5 +24,3 @@ fun main() {
 
     println(answer)
 }
-
-// 1:30 ~
