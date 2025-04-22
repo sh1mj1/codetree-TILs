@@ -1,38 +1,36 @@
 import kotlin.math.abs
 
+data class Pos(
+    val row: Int,
+    val col: Int,
+    val value: Int,
+) {
+    fun distance(other: Pos): Int =  abs(row - other.row) + abs(col - other.col)
+    
+}
+
 fun main() {
-    val gridSize = readln().toInt()
-    val grid: List<List<Int>> = List(gridSize) {
+    val gridSize = readLine()!!.toInt()
+    val grid: List<List<Pos>> = (0 until gridSize).map { r ->
         val line = readLine()!!
-        // -1: 출발, -2: 도착
-        line.map {
-            if (it == '.') {
-                0
-            } else if (it == 'S') {
-                -1
-            } else if (it == 'E') {
-                -2
-            } else {
-                it.digitToInt()
+        line.mapIndexed { c, v ->
+            when (v) {
+                '.' -> Pos(r, c, 0)
+                'S' -> Pos(r, c, -1)
+                'E' -> Pos(r, c, -2)
+                else -> Pos(r, c, v.digitToInt())
             }
         }
     }
 
-    data class Pos(
-        val row: Int,
-        val col: Int,
-        val value: Int,
-    )
-
-    val coins = grid.flatMapIndexed { rowIndex, row ->
-        row.mapIndexedNotNull { colIndex, col ->
-            if (col > 0) {
-                return@mapIndexedNotNull Pos(rowIndex, colIndex, col)
-            } else {
-                return@mapIndexedNotNull null
-            }
+    fun coins(): List<Pos> {
+        return grid.flatMap { row ->
+            row.filter { it.value > 0 }
         }
-    }.sortedBy { it.value }
+    }
+
+    val coins: List<Pos> = coins()
+    val coinsSize = coins.size
 
     if (coins.size < 3) {
         println(-1)
@@ -41,61 +39,39 @@ fun main() {
 
     fun combinations(n: Int, m: Int): List<List<Pos>> {
         val combinations = mutableListOf<List<Pos>>()
-
-        fun add(coinStartIdx: Int, curCombi: List<Pos>) {
+        
+        fun add(sIdx: Int, curCombi: List<Pos>) {
             if (curCombi.size == m) {
                 combinations.add(curCombi)
                 return
             }
 
-            for (coinIdx in coinStartIdx until coins.size) {
-                add(coinIdx + 1, curCombi + coins[coinIdx] )
+            for (idx in sIdx until coinsSize) {
+                add(idx + 1, curCombi + coins[idx])
             }
         }
 
         add(0, emptyList())
-
         return combinations
     }
 
-    val combinations = combinations(coins.size, 3)
+    val flattenGrid = grid.flatMap { it }
 
-    var start: Pos = Pos(0, 0, 0)
-    var end: Pos = Pos(0, 0, 0)
-    
-    (0 until gridSize).forEach { row ->
-        (0 until gridSize).forEach { col ->
-            if (grid[row][col] == -1) {
-                start = Pos(row, col, grid[row][col])
-            }
-            if (grid[row][col] == -2) {
-                end = Pos(row, col, grid[row][col])
-            }
+    val start = flattenGrid.first { it.value == -1 }
+    val end = flattenGrid.first { it.value == -2 }
+
+    val combinations = combinations(coinsSize, 3).map { listOf(start) + it + end}
+
+
+    fun distance(combination: List<Pos>): Int {
+        return combination.zipWithNext { pos1, pos2 ->
+            pos1.distance(pos2)
+        }.sum()
+    }
+
+    println(
+        combinations.minOf {
+            distance(it)
         }
-    }
-    
-
-    fun routeSize(combination: List<Pos>): Int {
-        val com = (listOf(start) + combination + end)
-        var result = 0
-
-        for (idx in 1 until com.size) {
-            val diff = abs(com[idx].row - com[idx - 1].row) + abs(com[idx].col - com[idx - 1].col)
-            result += diff
-        }
-
-        return result
-    }
-
-    val answer = combinations.minOf {
-        routeSize(it)
-    }
-
-    println(answer)
-    
-
-    
-
-
-
+    )
 }
