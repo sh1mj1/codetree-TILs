@@ -26,7 +26,7 @@ fun main() {
     fun coins(): List<Pos> {
         return grid.flatMap { row ->
             row.filter { it.value > 0 }
-        }
+        }.sortedBy { it.value }
     }
 
     val coins: List<Pos> = coins()
@@ -52,7 +52,7 @@ fun main() {
         }
 
         add(0, emptyList())
-        return combinations.sortedBy { it.value }
+        return combinations
     }
 
     val flattenGrid = grid.flatMap { it }
