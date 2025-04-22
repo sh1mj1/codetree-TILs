@@ -52,7 +52,7 @@ fun main() {
         }
 
         add(0, emptyList())
-        return combinations
+        return combinations.sortedBy { it.value }
     }
 
     val flattenGrid = grid.flatMap { it }
