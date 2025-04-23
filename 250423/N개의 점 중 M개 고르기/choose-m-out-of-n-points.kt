@@ -42,7 +42,7 @@ fun main() {
     
     val answer = nCm.minOf { sel ->
         val mC2 = combinations(m, 2, sel)
-        mC2.minOf { 
+        mC2.maxOf { 
             it[0].distance(it[1])
         }
     }
