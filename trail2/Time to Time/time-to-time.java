@@ -8,19 +8,7 @@ public class Main {
         int startMinute = sc.nextInt();
         int destHour = sc.nextInt();
         int destMinute = sc.nextInt();
-        int elapsed = 0;
-
-        while (true) {
-            if (startHour == destHour && startMinute == destMinute) {
-                break;
-            }
-            elapsed++;
-            startMinute++;
-            if (startMinute == 60) {
-                startMinute = 0;
-                startHour++;
-            }
-        }
-        System.out.println(elapsed);
+        
+        System.out.println(destHour * 60 + destMinute - (startHour * 60 + startMinute));
     }
 }
