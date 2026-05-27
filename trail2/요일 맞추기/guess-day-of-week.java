@@ -1,15 +1,24 @@
 import java.util.Scanner;
 
 public class Main {
-    static int[] mm = {Integer.MAX_VALUE, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    static int[] mm = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    static int[] memo = new int[14];
     static String[] pDiff = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
+
+    private static int monthDays(int m) {
+        if (m < 1) {
+            return 0;
+        }
+        if (memo[m] != 0) {
+            return memo[m];
+        }
+
+        memo[m] = monthDays(m - 1) + mm[m - 1];
+        return memo[m];
+    }
     
     private static int numDays(int m, int d) {
-        int days = 0;
-        for (int i = 1; i < m; i++) {
-            days += mm[i];
-        }
-        return (days + d);
+        return (monthDays(m) + d);
     }
 
     public static void main(String[] args) {
